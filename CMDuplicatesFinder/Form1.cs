@@ -31,5 +31,28 @@ namespace CMDuplicatesFinder
         {
             MessageBox.Show("Thanks!");
         }
+
+        private void debugInstructionsLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonBrowse_Click(object sender, EventArgs e)
+        {
+            if(openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                labelFilename.Text = openFileDialog1.FileName;
+            }
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }

@@ -29,38 +29,36 @@ namespace CMDuplicatesFinder
         private void InitializeComponent()
         {
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.debugInstructionsLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.helloWorldLabel = new System.Windows.Forms.Label();
+            this.buttonBrowse = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelFilename = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(191, 351);
+            this.linkLabel1.Location = new System.Drawing.Point(130, 196);
+            this.linkLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(418, 20);
+            this.linkLabel1.Size = new System.Drawing.Size(284, 13);
             this.linkLabel1.TabIndex = 0;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Click here to continue learning how to build a desktop app!";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
-            // debugInstructionsLabel
-            // 
-            this.debugInstructionsLabel.AutoSize = true;
-            this.debugInstructionsLabel.Location = new System.Drawing.Point(146, 107);
-            this.debugInstructionsLabel.Name = "debugInstructionsLabel";
-            this.debugInstructionsLabel.Size = new System.Drawing.Size(532, 20);
-            this.debugInstructionsLabel.TabIndex = 1;
-            this.debugInstructionsLabel.Text = "Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app!";
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(325, 240);
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(150, 122);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(146, 43);
+            this.button1.Size = new System.Drawing.Size(249, 49);
             this.button1.TabIndex = 2;
-            this.button1.Text = "Click Me!";
+            this.button1.Text = "Find possible duplicates!";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -68,23 +66,67 @@ namespace CMDuplicatesFinder
             // 
             this.helloWorldLabel.AutoSize = true;
             this.helloWorldLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.helloWorldLabel.Location = new System.Drawing.Point(303, 30);
+            this.helloWorldLabel.Location = new System.Drawing.Point(84, 20);
+            this.helloWorldLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.helloWorldLabel.Name = "helloWorldLabel";
-            this.helloWorldLabel.Size = new System.Drawing.Size(192, 37);
+            this.helloWorldLabel.Size = new System.Drawing.Size(372, 26);
             this.helloWorldLabel.TabIndex = 3;
-            this.helloWorldLabel.Text = "Hello World!";
+            this.helloWorldLabel.Text = "Welcome to CMDuplicatesFinder tool";
+            // 
+            // buttonBrowse
+            // 
+            this.buttonBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBrowse.Location = new System.Drawing.Point(405, 85);
+            this.buttonBrowse.Name = "buttonBrowse";
+            this.buttonBrowse.Size = new System.Drawing.Size(93, 25);
+            this.buttonBrowse.TabIndex = 4;
+            this.buttonBrowse.Text = "Browse";
+            this.buttonBrowse.UseVisualStyleBackColor = true;
+            this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.labelFilename);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(51, 72);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(348, 45);
+            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Path to the exported database .csv file:";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // labelFilename
+            // 
+            this.labelFilename.AutoEllipsis = true;
+            this.labelFilename.Location = new System.Drawing.Point(7, 20);
+            this.labelFilename.Name = "labelFilename";
+            this.labelFilename.Size = new System.Drawing.Size(329, 18);
+            this.labelFilename.TabIndex = 0;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "csv";
+            this.openFileDialog1.Filter = "Exported database file (*.csv)|*.csv";
+            this.openFileDialog1.Title = "Select an exported database .csv file";
+            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(543, 232);
+            this.Controls.Add(this.buttonBrowse);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.helloWorldLabel);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.debugInstructionsLabel);
             this.Controls.Add(this.linkLabel1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,9 +135,12 @@ namespace CMDuplicatesFinder
         #endregion
 
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Label debugInstructionsLabel;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label helloWorldLabel;
+        private System.Windows.Forms.Button buttonBrowse;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label labelFilename;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 
