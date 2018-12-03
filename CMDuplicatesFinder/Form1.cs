@@ -29,7 +29,8 @@ namespace CMDuplicatesFinder
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Thanks!");
+            new Form2(labelFilename.Text).Show();
+            Hide();
         }
 
         private void debugInstructionsLabel_Click(object sender, EventArgs e)
