@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClassLibrary;
 
 
 namespace CMDuplicatesFinder
@@ -35,6 +36,9 @@ namespace CMDuplicatesFinder
             Debug.WriteLine("path:"+path);
             var Lines = File.ReadAllLines(path).Select(line => line.Split(';'));
             Debug.WriteLine("read");
+
+            ClassLibrary.Class1 instance = new ClassLibrary.Class1();
+            Debug.WriteLine("read2:" + instance.GetDuplicates(path));
 
             int lineCount = 0;
 
