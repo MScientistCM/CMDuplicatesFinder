@@ -33,12 +33,12 @@ namespace CMDuplicatesFinder
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            Debug.WriteLine("path:"+path);
+            Trace.WriteLine("path:"+path);
             var Lines = File.ReadAllLines(path).Select(line => line.Split(';'));
-            Debug.WriteLine("read");
+            Trace.WriteLine("read");
 
             ClassLibrary.Class1 instance = new ClassLibrary.Class1();
-            Debug.WriteLine("read2:" + instance.GetDuplicates(path));
+            Trace.WriteLine("read2:" + instance.GetDuplicates(path));
 
             int lineCount = 0;
 
@@ -50,8 +50,8 @@ namespace CMDuplicatesFinder
 
             foreach(string[] line in Lines)
             {
-                if (lineCount % 50 == 0)
-                Debug.WriteLine("progress:"+lineCount);
+                if (lineCount % 1 == 0)
+                    Trace.WriteLine("progress:"+lineCount);
                 if (lineCount == 0)   //first line is the column titles
                 {
                     int columnIndex = 0;
@@ -79,7 +79,7 @@ namespace CMDuplicatesFinder
                 }
                 else
                 {
-                    Staff currentStaff = new Staff(line, firstNameIndex, lastNameIndex, commonNameIndex, dobIndex, clubIndex);
+                   // Staff currentStaff = new Staff(line, firstNameIndex, lastNameIndex, commonNameIndex, dobIndex, clubIndex);
 
                     int otherLineCount = 0;
                     foreach (string[] otherStaffLine in Lines)
@@ -90,11 +90,11 @@ namespace CMDuplicatesFinder
                            
                         } else
                         {
-                            Staff otherStaff = new Staff(otherStaffLine, firstNameIndex, lastNameIndex, commonNameIndex, dobIndex, clubIndex);
+                           // Staff otherStaff = new Staff(otherStaffLine, firstNameIndex, lastNameIndex, commonNameIndex, dobIndex, clubIndex);
 
-                            if(Staff.Compare(currentStaff, otherStaff))
+                           // if(Staff.Compare(currentStaff, otherStaff))
                             {
-                                Debug.WriteLine("identical:" + currentStaff.print());
+                             //   Trace.WriteLine("identical:" + currentStaff.print());
                             }
                         }
 
@@ -106,7 +106,7 @@ namespace CMDuplicatesFinder
                
                 lineCount++;
             }
-            Debug.WriteLine("done");            
+            Trace.WriteLine("done");            
         }        
 
         private void Form2_FormClosing(object sender, EventArgs e)
