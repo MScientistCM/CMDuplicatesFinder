@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="ClassLibrary.h" />
     <ClInclude Include="DOB.h" />
+    <ClInclude Include="DuplicateGroup.h" />
     <ClInclude Include="DuplicatesFinder.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="staff.h" />
