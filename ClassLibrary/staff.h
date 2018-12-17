@@ -139,7 +139,7 @@ public:
 
 	std::string print()
 	{
-		return  + "FN: " + (firstNamePrintable.empty() ? NONE : firstNamePrintable) + "; LN: " + (lastNamePrintable.empty() ? NONE : lastNamePrintable) + "; CN: " + (commonNamePrintable.empty() ? NONE : commonNamePrintable) + "; DOB: " + dob.print() + "; CLUB: " + (club.empty() ? NONE : club) + "; LOAN: " + (loan.empty() ? NONE : loan) + "; STAFF ID: " + std::to_string(id);
+		return  + "FN: " + (firstNamePrintable.empty() ? NONE : firstNamePrintable) + "; LN: " + (lastNamePrintable.empty() ? NONE : lastNamePrintable) + "; CN: " + (commonNamePrintable.empty() ? NONE : commonNamePrintable) + "; DOB: " + dob.print() + "; CLUB: " + (clubPrintable.empty() ? NONE : clubPrintable) + "; LOAN: " + (loanPrintable.empty() ? NONE : loanPrintable) + "; STAFF ID: " + std::to_string(id);
 	}
 
 private:

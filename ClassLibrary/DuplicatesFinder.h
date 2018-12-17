@@ -48,7 +48,7 @@ public:
 		//finds the duplicates
 		for (std::vector<Staff>::iterator i = staffVector.begin(); i < staffVector.end(); ++i) {
 			Console::WriteLine("Progress: staff i: {0}", i->id);
-			if (i->id % 100 == 0) {
+			if (i->id % 500 == 0) {
 				//Console::WriteLine("Progress: staff i: {0}", i->id);
 				duplicatesList = printDuplicatesList(duplicates, staffVector, i->id);
 				String ^systemstring3 = gcnew String(duplicatesList.c_str());
