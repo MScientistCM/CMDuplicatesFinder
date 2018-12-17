@@ -10,7 +10,7 @@ public:
 	/*there are 9 different duplicate types, they can be identified by the letters (E is Equal, S is similar and D is different
 	and the first letter is for full name, second letter for date of birth and third letter for club). So, for example
 	the ESD vector contains all duplicate groups of the staffs who have Equal name, Similar date of birth and Different club.
-	But we use only 6 because the last 3 return too many false positives*/
+	But we use only 6 for now because the last 3 return too many false positives*/
 	static constexpr int NUMBER_OF_DUPLICATE_TYPES = 6;
 
 	static constexpr int DUPLICATE_TYPE_MERGED = -2;
@@ -22,7 +22,7 @@ public:
 	static constexpr int DUPLICATE_TYPE_SSE = 4;
 	static constexpr int DUPLICATE_TYPE_ESD = 5;
 	//TODO: maybe include a SSD type?
-	//these 3 results in too many false positives:
+	//these 3 result in too many false positives, so they are disabled for now:
 	static constexpr int DUPLICATE_TYPE_DEE = 6;
 	static constexpr int DUPLICATE_TYPE_SED = 7;
 	static constexpr int DUPLICATE_TYPE_EDD = 8;	

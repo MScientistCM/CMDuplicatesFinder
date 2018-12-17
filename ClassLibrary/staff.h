@@ -173,11 +173,11 @@ private:
 			return 'a';
 		}
 		if (c < 0) {
-			/*all latin1 non-ASCII chars, if they are whitespace or punctuation ignores, 
+			/*all latin1 non-ASCII chars, discards them if they are whitespace or punctuation, 
 			if they are similar to some ascii letter replaces them with the ascii letter,
 			and if looks some unknown symbol replace it with '?' char for simplicity and for 
 			automatically handling cases like Joşn Smith and JoŞn Smith*/			
-			if (c < -95) { //all below -95 can be considered whitespace/punctuation and are ignored, except below:
+			if (c < -95) { //all below -95 can be considered whitespace/punctuation and are discarded, except below:
 				if (c == -128) {
 					return 'e';
 				}
@@ -240,7 +240,7 @@ private:
 				}
 			}
 		}
-		//All remaining non-letter chars are ignored for simplifiying and optimizing the algorythm
+		//All remaining non-letter chars are discarded for simplifiying and optimizing the algorythm
 		return 0;
 	}
 
