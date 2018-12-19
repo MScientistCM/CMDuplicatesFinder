@@ -11,55 +11,76 @@ public class DuplicatesFinder
 {
 
 public:
-	static std::string findDuplicates(std::stringstream& wholeCsv) {		
-		Console::WriteLine("findDuplicates");
 
-		std::string duplicatesList;
+	/*parses the CSV stringstream and returns the number of staff found*/
+	int parse(std::stringstream& wholeCsv) {
+		Console::WriteLine("parse");
 
-		//parses the whole csv stringstream
-		std::vector<Staff> staffVector;
+		//parses the whole csv stringstream		
 		int staffCount = -1;
-		while (!wholeCsv.eof()) {				
-			if(staffCount >= 0) {
+		while (!wholeCsv.eof()) {
+			if (staffCount >= 0) {
 				//adds staff to vector
 				staffVector.push_back(getStaffFromLine(wholeCsv, staffCount));
 
 				if (staffCount % 1000 == 0) {
-					Console::WriteLine("Progress: staff count: {0}", staffCount);					
+					Console::WriteLine("Progress: staff count: {0}", staffCount);
 				}
 			}
 			else {
 				//skips header
 				getStaffFromLine(wholeCsv, staffCount);
 			}
-			staffCount++;			
-		}		
+			staffCount++;
+		}
 		Console::WriteLine("Parsed {0} staff", staffCount);
 
-		//we use one vector of duplicate groups for each duplicate type.
-		std::vector<std::vector<DuplicateGroup>> duplicates;
-		duplicates.reserve(DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES); 
+		//Initializes the duplicates vector. We use one vector of duplicate groups for each duplicate type.
+		duplicates.reserve(DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES);
 		for (int i = 0; i < DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES; ++i)
 		{
 			std::vector<DuplicateGroup> emptyVector;
 			duplicates.push_back(emptyVector);
-		}	
+		}
+
+		//initializes the main iterator
+		i = staffVector.begin();
+
+		return staffCount;
+	}
+
+	/*finds some duplicates and returns the current list of duplicates as an string*/
+	std::string findDuplicates() {		
+		Console::WriteLine("findDuplicates");	
+
+		if (firstIteration) {
+			//returs an empty printable list in the first iteration so that the user can have an initial visual feedback
+			firstIteration = false;
+			return printableDuplicatesList(duplicates, staffVector, i->id);
+		}
 		
 		//finds the duplicates
-		for (std::vector<Staff>::iterator i = staffVector.begin(); i < staffVector.end(); ++i) {
+		int iterMax = i->id + MAX_ITERATIONS_WITHOUT_REPORTING;
+		Console::WriteLine("currentStaffIterator: {0}, iterMax {1}", i->id, iterMax);
+		for (bool foundDuplicate = false; i < staffVector.end() && i->id < iterMax && !foundDuplicate; ++i) {
 			Console::WriteLine("Progress: staff i: {0}", i->id);
-			if (i->id % 500 == 0) {
-				//Console::WriteLine("Progress: staff i: {0}", i->id);
-				duplicatesList = printDuplicatesList(duplicates, staffVector, i->id);
+			if (i->id == iterMax - 1) {
+				Console::WriteLine("Iter max reached. Progress: staff i: {0}", i->id);
+			/*	duplicatesList = printDuplicatesList(duplicates, staffVector, i->id);
 				String ^systemstring3 = gcnew String(duplicatesList.c_str());
 				Console::WriteLine("{0}", systemstring3);
-				delete systemstring3;
+				delete systemstring3;*/
 			}
 			for (std::vector<Staff>::iterator j = i+1; j < staffVector.end(); ++j) {
 				int duplicateType = Staff::Compare(*i, *j);
 
 				if (duplicateType >= 0 && duplicateType < DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES) {
 					//then staff i is possible duplicate with staff j
+					
+					//sets this bool to true so that we save the updated duplicates list into the output file and
+					//return to c# to update the visible list to the user
+					foundDuplicate = true;
+
 					/*Console::WriteLine("possible duplicate: {0}", duplicateType);
 					String ^systemstring = gcnew String(i->print().c_str());
 					Console::WriteLine("{0}", systemstring);
@@ -115,9 +136,9 @@ public:
 					delete systemstring3;*/
 				}				 
 			}
-		}
+		}		
 		
-		return duplicatesList;
+		return printableDuplicatesList(duplicates, staffVector, i->id - 1);
 	}
 
 
@@ -130,22 +151,39 @@ private:
 	static constexpr int clubIndex = 9;	
 	static constexpr int loanIndex = 10;
 
-	//private constructor to prevent instantiation of this class
-	DuplicatesFinder() {}
+	//When more than this number of iterations is reached without finding any new duplicates,
+	//we return to c# layer to update the progress bar
+	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 50;	
 
-	static std::string printDuplicatesList(std::vector<std::vector<DuplicateGroup>> duplicates, std::vector<Staff> staffVector, int currentStaffId) {
+	std::vector<Staff> staffVector;
+	std::vector<std::vector<DuplicateGroup>> duplicates;
+	std::vector<Staff>::iterator i;
+	bool firstIteration = true;
+
+	static std::string printableDuplicatesList(std::vector<std::vector<DuplicateGroup>> duplicates, std::vector<Staff> staffVector, int currentStaffId) {
 		//TODO: sort result by likelly chances with a percentage score based on their similarity substitutions
-		bool isCompleted;
+		bool isCompleted = false;
 		float progress = 100.0;
-		std::string result = "DUPLICATES LIST - ";
+		std::string result;
+
+		/*the first two lines of the result string are for internal use by the code, it isn't print to the user, its just
+		to pass progress information between c++ and c# layer*/
 		if (staffVector.size() == currentStaffId + 1) {
-			result += "FULL ";
 			isCompleted = true;
+			result += "1";
+		}
+		else {
+			result += "0"; 
+		}
+		result += "\n" + std::to_string(currentStaffId);
+
+		result += "\nDUPLICATES LIST - ";
+		if (isCompleted) {
+			result += "FULL ";			
 		}
 		else {
 			result += "PARTIAL ";
-			progress = ((float)currentStaffId / (float)staffVector.size()) * 100.0f;
-			isCompleted = false;
+			progress = ((float)currentStaffId / (float)staffVector.size()) * 100.0f;			
 		}
 		result += "RESULT (";
 		if (!isCompleted) {
@@ -163,24 +201,23 @@ private:
 		if (!isCompleted) {
 			result += " SO FAR";
 		}
-		result += "):\n";
-		result += "Legend: (FN = First name; LN = Last name; CN = Common name; DOB = Date of birth)\n";	
+		result += "):\r\n";
+		result += "Legend: (FN = First name; LN = Last name; CN = Common name; DOB = Date of birth)\r\n";	
 		 
 		for (int i = 0; i < DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES; ++i)
 		{
-			result += "\n\n************************* DUPLICATE TYPE " + DuplicateGroup::getTypeTitle(i) + " (";
+			result += "\r\n\r\n************************* DUPLICATE TYPE " + DuplicateGroup::getTypeTitle(i) + " (";
 			std::vector<DuplicateGroup> groupVector = duplicates.at(i);
 			result += std::to_string(groupVector.size()) + " DUPLICATE GROUPS FOUND";
 			if (!isCompleted) {
 				result += " SO FAR";
 			}
-			result += "):\n";
+			result += "):\r\n";
 			for (std::vector<DuplicateGroup>::iterator j = groupVector.begin(); j != groupVector.end(); ++j) {
 				if (j->duplicateType >= 0) {
-					result += "    DUPLICATE GROUP ID " + DuplicateGroup::getGroupIdTitle(i) + std::to_string(j->groupId) + ":\n";
-					std::unordered_set<int> staffIds = j->staffIds;
-					for (std::unordered_set<int>::iterator k = staffIds.begin(); k != staffIds.end(); ++k) {
-						result += "        " + staffVector.at(*k).print() + "\n"; 
+					result += "    DUPLICATE GROUP ID " + DuplicateGroup::getGroupIdTitle(i) + std::to_string(j->groupId) + ":\r\n";
+					for (std::unordered_set<int>::iterator k = j->staffIds.begin(); k != j->staffIds.end(); ++k) {
+						result += "        " + staffVector.at(*k).print() + "\r\n"; 
 					}
 				}
 			}			
