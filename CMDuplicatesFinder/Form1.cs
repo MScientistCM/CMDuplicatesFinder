@@ -19,8 +19,11 @@ namespace CMDuplicatesFinder
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new Form2(labelFilename.Text).Show();
-            Hide();
+            if (labelFilename.Text.ToString().Length > 0) 
+            {
+                new Form2(labelFilename.Text).Show();
+                Hide();
+            }            
         }
 
         private void debugInstructionsLabel_Click(object sender, EventArgs e)

@@ -153,7 +153,7 @@ private:
 
 	//When more than this number of iterations is reached without finding any new duplicates,
 	//we return to c# layer to update the progress bar
-	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 100;	
+	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 50;	
 	
 	//If change this constant here, then the UI in c# side needs to be manually changed as well to reflect the new filename
 	static constexpr char * RESULT_FILENAME = "DuplicatesList.txt";
