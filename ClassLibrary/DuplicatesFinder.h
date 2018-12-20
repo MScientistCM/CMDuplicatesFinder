@@ -154,7 +154,9 @@ private:
 	//When more than this number of iterations is reached without finding any new duplicates,
 	//we return to c# layer to update the progress bar
 	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 100;	
-	static constexpr char * RESULT_FILE = "DuplicatesList.txt";
+	
+	//If change this constant here, then the UI in c# side needs to be manually changed as well to reflect the new filename
+	static constexpr char * RESULT_FILENAME = "DuplicatesList.txt";
 
 	std::vector<Staff> staffVector;
 	std::vector<std::vector<DuplicateGroup>> duplicates;
@@ -225,7 +227,7 @@ private:
 			}			
 		}
 
-		std::ofstream resultFile(RESULT_FILE, std::ios::binary);
+		std::ofstream resultFile(RESULT_FILENAME, std::ios::binary);
 		resultFile << result;
 		resultFile.close();
 
