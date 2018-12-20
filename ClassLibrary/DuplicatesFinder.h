@@ -153,7 +153,8 @@ private:
 
 	//When more than this number of iterations is reached without finding any new duplicates,
 	//we return to c# layer to update the progress bar
-	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 50;	
+	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 100;	
+	static constexpr char * RESULT_FILE = "DuplicatesList.txt";
 
 	std::vector<Staff> staffVector;
 	std::vector<std::vector<DuplicateGroup>> duplicates;
@@ -164,20 +165,21 @@ private:
 		//TODO: sort result by likelly chances with a percentage score based on their similarity substitutions
 		bool isCompleted = false;
 		float progress = 100.0;
+		std::string internalUse;
 		std::string result;
 
 		/*the first two lines of the result string are for internal use by the code, it isn't print to the user, its just
 		to pass progress information between c++ and c# layer*/
 		if (staffVector.size() == currentStaffId + 1) {
 			isCompleted = true;
-			result += "1";
+			internalUse += "1";
 		}
 		else {
-			result += "0"; 
+			internalUse += "0";
 		}
-		result += "\n" + std::to_string(currentStaffId);
+		internalUse += "\n" + std::to_string(currentStaffId) + "\n";
 
-		result += "\nDUPLICATES LIST - ";
+		result += "DUPLICATES LIST - ";
 		if (isCompleted) {
 			result += "FULL ";			
 		}
@@ -222,7 +224,12 @@ private:
 				}
 			}			
 		}
-		return result;
+
+		std::ofstream resultFile(RESULT_FILE, std::ios::binary);
+		resultFile << result;
+		resultFile.close();
+
+		return internalUse + result;
 	}
 
 	static Staff getStaffFromLine(std::stringstream& wholeCsv, int staffCount)
