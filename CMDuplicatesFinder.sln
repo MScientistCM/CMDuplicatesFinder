@@ -17,14 +17,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Debug|Any CPU.Build.0 = Debug|x86
 		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Debug|x64.Build.0 = Debug|Any CPU
 		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Debug|x86.Build.0 = Debug|Any CPU
-		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Release|Any CPU.Build.0 = Release|Any CPU
+		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Release|Any CPU.ActiveCfg = Release|x86
+		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Release|Any CPU.Build.0 = Release|x86
 		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Release|x64.ActiveCfg = Release|Any CPU
 		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Release|x64.Build.0 = Release|Any CPU
 		{781C86AC-0C40-4504-9A82-7A6C66A08913}.Release|x86.ActiveCfg = Release|Any CPU
