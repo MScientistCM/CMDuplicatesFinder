@@ -8,7 +8,7 @@ public class Staff
 {
 
 public:
-	int id = -1;	
+	int id = -1;		
 	std::string firstName = "";
 	std::string lastName = "";
 	std::string commonName = "";
@@ -22,9 +22,38 @@ public:
 	std::string loanPrintable = "";
 	DOB dob;
 	int duplicateGroupId[DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES]; //the duplicate group id he belongs to for each duplicate type, or -1 if none.	
+	
+	//Stores hashes of the strings for optimizing the equal comparisons (comparing two hashes is way faster than comparing each char between two strings)
+	//TODO: to prevent false positives on hash comparisons, do some safe check in the strings lengths and in the first char of the strings?
+	size_t firstNameH;
+	size_t lastNameH;
+	size_t commonNameH;
+	size_t fullNameH;
+	size_t clubH;
+	size_t loanH;
+
+	/*combines all field hashes into a single hash and returns this single hash value from this staff (for use in the pause/resume feature)*/
+	size_t getHash() {
+		std::hash<std::string> hasherS;		
+		std::hash<int> hasherI;
+		size_t ret = combineHash(hasherI(id), hasherS(dob.print()));
+		ret = combineHash(ret, firstNameH);
+		ret = combineHash(ret, lastNameH);
+		ret = combineHash(ret, commonNameH);
+		ret = combineHash(ret, fullNameH);
+		ret = combineHash(ret, clubH);
+		ret = combineHash(ret, loanH);
+		//Console::WriteLine("staff hash: {0}", ret);
+		return ret;
+	}
+
+	/*combines two hashes into a single hash using a multiply and an addition to scramble it a little*/
+	static size_t combineHash(size_t h1, size_t h2) {
+		return h1 * HASHER_MAGIC_NUMBER + h2;
+	}
 
 	Staff() {
-		initDuplicateGroupIdArray();
+		initDuplicateGroupIdArray();	
 	}
 
 	Staff(int index, std::string firstName, std::string lastName, std::string commonName, std::string dobString, std::string club, std::string loan)
@@ -88,51 +117,91 @@ public:
 		dob = DOB(dobString);
 
 		initDuplicateGroupIdArray();
-	}	
+				
+		std::hash<std::string> hasher;
+		firstNameH = hasher(this->firstName);
+		lastNameH = hasher(this->lastName);
+		commonNameH = hasher(this->commonName);
+		fullNameH = hasher(this->fullName);
+		clubH = hasher(this->club);
+		loanH = hasher(this->loan);
+	}		
 
 	/*compares two staffs and returns the duplicate type between them, or no type if not duplicates*/
 	static int Compare(Staff s1, Staff s2)
-	{
-		int nameComp = CompareName(s1, s2);
-		int dobComp = DOB::Compare(s1.dob, s2.dob);		
-		int clubComp = CompareClub(s1.club, s2.club, s1.loan, s2.loan);
-		
-		if (nameComp == DuplicateGroup::EQUAL) {
-			if (dobComp == DuplicateGroup::EQUAL) {
-				if (clubComp == DuplicateGroup::EQUAL) {
-					return DuplicateGroup::DUPLICATE_TYPE_EEE;
+	{		
+		int dobComp = DOB::Compare(s1.dob, s2.dob);
+		if (dobComp == DuplicateGroup::DIFFERENT) {
+			int clubComp = CompareClub(s1.club, s2.club, s1.loan, s2.loan, s1.clubH, s2.clubH, s1.loanH, s2.loanH);
+			if (clubComp == DuplicateGroup::DIFFERENT) {
+				if (DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES > DuplicateGroup::DUPLICATE_TYPE_EDD) {
+					int nameComp = CompareName(s1, s2, true);
+					if (nameComp == DuplicateGroup::EQUAL) {
+						return DuplicateGroup::DUPLICATE_TYPE_EDD;
+					}
 				}
-				else {
-					return DuplicateGroup::DUPLICATE_TYPE_EED;
-				}
-			}
-			else if (clubComp == DuplicateGroup::EQUAL) {
-				return DuplicateGroup::DUPLICATE_TYPE_EDE;
-			}
-			else if (dobComp == DuplicateGroup::SIMILAR) {
-				return DuplicateGroup::DUPLICATE_TYPE_ESD;
+				return DuplicateGroup::DUPLICATE_TYPE_NONE;
 			}
 			else {
-				return DuplicateGroup::DUPLICATE_TYPE_EDD;
-			}
-		}
-		else if (nameComp == DuplicateGroup::SIMILAR) {
-			if (dobComp == DuplicateGroup::EQUAL) {
-				if (clubComp == DuplicateGroup::EQUAL) {
-					return DuplicateGroup::DUPLICATE_TYPE_SEE;
+				int nameComp = CompareName(s1, s2, true);
+				if (nameComp == DuplicateGroup::EQUAL) {
+					return DuplicateGroup::DUPLICATE_TYPE_EDE;
 				}
 				else {
-					return DuplicateGroup::DUPLICATE_TYPE_SED;
+					return DuplicateGroup::DUPLICATE_TYPE_NONE;
 				}
 			}
-			else if (dobComp == DuplicateGroup::SIMILAR && clubComp == DuplicateGroup::EQUAL) {
-				return DuplicateGroup::DUPLICATE_TYPE_SSE;
-			}			
 		}
-		else if (dobComp == DuplicateGroup::EQUAL && clubComp == DuplicateGroup::EQUAL) {
-			return DuplicateGroup::DUPLICATE_TYPE_DEE;
+		else {
+			int clubComp = CompareClub(s1.club, s2.club, s1.loan, s2.loan, s1.clubH, s2.clubH, s1.loanH, s2.loanH);
+			if (clubComp == DuplicateGroup::DIFFERENT) {
+				int nameComp = CompareName(s1, s2, DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES <= DuplicateGroup::DUPLICATE_TYPE_SED);
+				if (nameComp == DuplicateGroup::EQUAL) {
+					if (dobComp == DuplicateGroup::SIMILAR) {
+						return DuplicateGroup::DUPLICATE_TYPE_ESD;
+					}
+					else {
+						return DuplicateGroup::DUPLICATE_TYPE_EED;
+					}
+				}
+				else if(nameComp == DuplicateGroup::SIMILAR) {
+					if (dobComp == DuplicateGroup::EQUAL) {
+						return DuplicateGroup::DUPLICATE_TYPE_SED;
+					}
+				}
+				else {
+					return DuplicateGroup::DUPLICATE_TYPE_NONE;
+				}
+			}
+			else {
+				int nameComp = CompareName(s1, s2, false);
+				if (nameComp == DuplicateGroup::DIFFERENT) {
+					if (dobComp == DuplicateGroup::EQUAL) {
+						return DuplicateGroup::DUPLICATE_TYPE_DEE;
+					}
+					else {
+						return DuplicateGroup::DUPLICATE_TYPE_NONE;
+					}
+				}
+				if (dobComp == DuplicateGroup::SIMILAR) {
+					if (nameComp == DuplicateGroup::EQUAL) {
+						return DuplicateGroup::DUPLICATE_TYPE_EDE;
+					}
+					else {
+						return DuplicateGroup::DUPLICATE_TYPE_SSE;
+					}
+				}
+				else {
+					if (nameComp == DuplicateGroup::EQUAL) {
+						return DuplicateGroup::DUPLICATE_TYPE_EEE;
+					}
+					else {
+						return DuplicateGroup::DUPLICATE_TYPE_SEE;
+					}
+				}
+			}
 		}
-		return DuplicateGroup::DUPLICATE_TYPE_NONE;
+		return DuplicateGroup::DUPLICATE_TYPE_NONE;		
 		//julio baptista very interesting duplicate case in october 2018 database
 		//and marquinhos (sao paulo and leverkussen) in lussenhof db another interesting case
 	}
@@ -145,6 +214,8 @@ public:
 private:
 
 	static constexpr char * NONE = "[None]";	
+
+	static constexpr size_t HASHER_MAGIC_NUMBER = 3;//a number known to give good scrambling when combining hash numbers
 	
 	static constexpr float SIMILAR_PERCENTAGE = .75f;// .75 means the names need to be at least 75% similar to be considered similar
 	static constexpr int MIDDLENAME_FACTOR = 4; //number of chars to look for in the extremities of a fullname, to identify cases where middle name is missing
@@ -243,23 +314,23 @@ private:
 		//All remaining non-letter chars are discarded for simplifiying and optimizing the algorythm
 		return 0;
 	}
-
+		
 	/**
 	compares fullname, common name, first name and last name of two staffs to determine if the names can
 	be considered equal, similar or different
 	*/
-	static int CompareName(Staff s1, Staff s2) {		
+	static int CompareName(Staff s1, Staff s2, bool abortIfNotEqual = false) {
 		//if commonname of one is equal to full name of other, considers them as having equal names
-		if (!s1.commonName.empty() && s1.commonName == s2.fullName) {
+		if (!s1.commonName.empty() && s1.commonNameH == s2.fullNameH) {
 			return DuplicateGroup::EQUAL;
 		}
-		if (!s2.commonName.empty() && s2.commonName == s1.fullName) {
+		if (!s2.commonName.empty() && s2.commonNameH == s1.fullNameH) {
 			return DuplicateGroup::EQUAL;
 		}
-		
+
 		//if first and last name is inverted between both staff, considers their names as equal because its a very common editting mistake
 		if (!s1.firstName.empty() && !s1.lastName.empty()) {
-			if (s1.firstName == s2.lastName && s1.lastName == s2.firstName) {
+			if (s1.firstNameH == s2.lastNameH && s1.lastNameH == s2.firstNameH) {
 				return DuplicateGroup::EQUAL;
 			}
 		}
@@ -267,29 +338,41 @@ private:
 		int s1len = s1.fullName.length();
 		int s2len = s2.fullName.length();
 		//compares full name of both staff
-		if (s1len > 0 && s2len > 0) {			
-			if (s1len == s2len) { 				
+		if (s1len > 0 && s2len > 0) {
+			if (s1len == s2len) {
+				if (s1.fullNameH == s2.fullNameH) {
+					//the full names are equal
+					return DuplicateGroup::EQUAL;
+				}
+
+				if (abortIfNotEqual) {
+					//abortIfNotEqual is for optimization purposes, its true when we only care if the names are equal or
+					//different (i.e. when similar doesnt matter)
+					return DuplicateGroup::DIFFERENT;
+				}
+
 				//both fullnames have the same lenght, so we compare them char by char to
 				//see if the fullnames are equal, similar or different
 				int subs = 0;
-				int maxSubs = (int) ((1.0f - SIMILAR_PERCENTAGE) * s1len);
-				for (int i = 0; i < s1len; i++) {					
-					if (s1.fullName[i] != s2.fullName[i]) {						
+				int maxSubs = (int)((1.0f - SIMILAR_PERCENTAGE) * s1len);
+				//TODO: this can have one very small optimization: we can break if theres less chars remaining than possible maxSubs being reached
+				for (int i = 0; i < s1len; i++) {
+					if (s1.fullName[i] != s2.fullName[i]) {
 						subs++;
 					}
-					if (subs > maxSubs) {						
+					if (subs > maxSubs) {
 						//too many differences, so we break
 						break;
-					}					
-				}				
+					}
+				}
 				if (subs <= maxSubs) {
-					if (subs == 0) {						
+					if (subs == 0) {
 						//the full names are equal
 						return DuplicateGroup::EQUAL;
-					}					
+					}
 					//the full names are similar
 					return DuplicateGroup::SIMILAR;
-				}				
+				}
 				//the full names are different, so we now compare the common, first and last names to 
 				//check	if the names can still be considered similar
 			}
@@ -323,61 +406,61 @@ private:
 					//the full names are different, so we now compare the common, first and last names to 
 					//check	if the names can still be considered similar
 				}
-				
+
 				//TODO: perhaps implement some more advanced similar name algorithm, but it could cause very bad performance
 				//TODO: maybe in middle name check we should simply pick the first and last words of the full name and compare them instead of first MIDDLENAME_FACTOR and last MIDDLENAME_FACTOR chars
 			}
 		}
-		
+
 		//compares common name of both staff, and if equal considers them as having similar name
-		if (!s1.commonName.empty() && s1.commonName == s2.commonName) {
+		if (!s1.commonName.empty() && s1.commonNameH == s2.commonNameH) {
 			return DuplicateGroup::SIMILAR;
 		}
 		//compares first name of both staff, and if equal considers them as having similar name
-		if (!s1.firstName.empty() && s1.firstName == s2.firstName) {
+		if (!s1.firstName.empty() && s1.firstNameH == s2.firstNameH) {
 			return DuplicateGroup::SIMILAR;
 		}
 		//compares last name of both staff, and if equal considers them as having similar name
-		if (!s1.lastName.empty() && s1.lastName == s2.lastName) {
-			return DuplicateGroup::SIMILAR;
-		}	
-
-		//compares fullName of one with first and last name of other, and if equal considers them as having similar name
-		if (!s1.fullName.empty() && (s1.fullName == s2.firstName || s1.fullName == s2.lastName)) {
-			return DuplicateGroup::SIMILAR;
-		}		
-		if (!s2.fullName.empty() && (s2.fullName == s1.firstName || s2.fullName == s1.lastName)) {
-			return DuplicateGroup::SIMILAR;
-		}	
-		//compares common name of one with first and last name of other, and if equal considers them as having similar name
-		if (!s1.commonName.empty() && (s1.commonName == s2.firstName || s1.commonName == s2.lastName)) {
+		if (!s1.lastName.empty() && s1.lastNameH == s2.lastNameH) {
 			return DuplicateGroup::SIMILAR;
 		}
-		if (!s2.commonName.empty() && (s2.commonName == s1.firstName || s2.commonName == s1.lastName)) {
+
+		//compares fullName of one with first and last name of other, and if equal considers them as having similar name
+		if (!s1.fullName.empty() && (s1.fullNameH == s2.firstNameH || s1.fullNameH == s2.lastNameH)) {
+			return DuplicateGroup::SIMILAR;
+		}
+		if (!s2.fullName.empty() && (s2.fullNameH == s1.firstNameH || s2.fullNameH == s1.lastNameH)) {
+			return DuplicateGroup::SIMILAR;
+		}
+		//compares common name of one with first and last name of other, and if equal considers them as having similar name
+		if (!s1.commonName.empty() && (s1.commonNameH == s2.firstNameH || s1.commonNameH == s2.lastNameH)) {
+			return DuplicateGroup::SIMILAR;
+		}
+		if (!s2.commonName.empty() && (s2.commonNameH == s1.firstNameH || s2.commonNameH == s1.lastNameH)) {
 			return DuplicateGroup::SIMILAR;
 		}
 		//compares first name of one with last name of other, and if equal considers them as having similar name
-		if (!s1.firstName.empty() && s1.firstName == s2.lastName) {
+		if (!s1.firstName.empty() && s1.firstNameH == s2.lastNameH) {
 			return DuplicateGroup::SIMILAR;
 		}
-		if (!s2.firstName.empty() && s2.firstName == s1.lastName) {
+		if (!s2.firstName.empty() && s2.firstNameH == s1.lastNameH) {
 			return DuplicateGroup::SIMILAR;
-		}		
-		
+		}
+
 		//the names are different
 		return DuplicateGroup::DIFFERENT;
 	}
 
-	static int CompareClub(std::string club1, std::string club2, std::string loan1, std::string loan2) {
+	static int CompareClub(std::string club1, std::string club2, std::string loan1, std::string loan2, size_t hc1, size_t hc2, size_t hl1, size_t hl2) {
 		//TODO handle case of no club, maybe consider similar club?
 		//TODO detect this type of club similarity: Nomme Kalju FC vs Nomme Kalju FC U21
-		if (!club1.empty() && club1 == club2) {
+		if (!club1.empty() && hc1 == hc2) {
 			return DuplicateGroup::EQUAL;
 		}
-		if (!loan1.empty() && (loan1 == loan2 || loan1 == club2)) {
+		if (!loan1.empty() && (hl1 == hl2 || hl1 == hc2)) {
 			return DuplicateGroup::EQUAL;
 		}
-		if (!loan2.empty() && loan2 == club1) {
+		if (!loan2.empty() && hl2 == hc1) {
 			return DuplicateGroup::EQUAL;
 		}
 		return DuplicateGroup::DIFFERENT;

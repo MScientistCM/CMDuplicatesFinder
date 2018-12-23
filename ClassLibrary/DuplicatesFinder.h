@@ -17,14 +17,19 @@ public:
 		Console::WriteLine("parse");
 
 		//parses the whole csv stringstream		
+		size_t vectorHash = 0;
 		int staffCount = -1;
 		while (!wholeCsv.eof()) {
 			if (staffCount >= 0) {
 				//adds staff to vector
-				staffVector.push_back(getStaffFromLine(wholeCsv, staffCount));
+				Staff s = getStaffFromLine(wholeCsv, staffCount);
+				staffVector.push_back(s);
+
+				//calculates the hash of the vector, for use in the pause/resume feature
+				vectorHash = Staff::combineHash(vectorHash, s.getHash());
 
 				if (staffCount % 1000 == 0) {
-					Console::WriteLine("Progress: staff count: {0}", staffCount);
+					Console::WriteLine("Progress: staff count: {0}; Hash so far: {1}", staffCount, vectorHash);
 				}
 			}
 			else {
@@ -33,7 +38,7 @@ public:
 			}
 			staffCount++;
 		}
-		Console::WriteLine("Parsed {0} staff", staffCount);
+		Console::WriteLine("Parsed {0} staff. Final vector hash {1}", staffCount, vectorHash);		
 
 		//Initializes the duplicates vector. We use one vector of duplicate groups for each duplicate type.
 		duplicates.reserve(DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES);
@@ -47,7 +52,7 @@ public:
 		i = staffVector.begin();
 
 		return staffCount;
-	}
+	}	
 
 	/*finds some duplicates and returns the current list of duplicates as an string*/
 	std::string findDuplicates() {		
@@ -153,7 +158,7 @@ private:
 
 	//When more than this number of iterations is reached without finding any new duplicates,
 	//we return to c# layer to update the progress bar
-	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 50;	
+	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 100;	
 	
 	//If change this constant here, then the UI in c# side needs to be manually changed as well to reflect the new filename
 	static constexpr char * RESULT_FILENAME = "DuplicatesList.txt";
