@@ -91,7 +91,7 @@ public:
 		case DUPLICATE_TYPE_SED:
 			return "SED-";
 		case DUPLICATE_TYPE_EDD:
-			return "EED-";
+			return "EDD-";
 		}
 		return "";
 	}
