@@ -27,7 +27,7 @@ namespace CMDuplicatesFinder
         private static readonly string STATUS_FINDING_DUPLICATES_3 = "Finding duplicates...";
         private static readonly string STATUS_COMPLETED = "Completed! Final result automatically saved into DuplicatesList.txt file.";
         private static readonly string STATUS_LABEL2_COMPLETED = "Duplicate staff found (automatically saved into DuplicatesList.txt file):";
-        private static readonly string STATUS_FAILED_OPEN = "Failed to open csv file. Make sure you have exported a valid csv file as per the tool guide instructions. Please restart the tool and try again.";
+        private static readonly string STATUS_FAILED_OPEN = "Failed to open csv file. Make sure you have exported a valid csv file as per the tool guide instructions. Please restart the tool and try again.";        
         private static readonly string STATUS_ERROR = "An error has occurred. Please restart the tool and try again, following the tool guide instructions. Error message: ";
         private static readonly string STATUS_ERROR_LABEL = "Stopped. An error has occurred.";
 
@@ -88,6 +88,7 @@ namespace CMDuplicatesFinder
             else if (instance.ReadCSVFile((string)e.Argument))
             {       
                 //successfully read csv file
+
                 if (worker.CancellationPending == true)
                 {
                     Trace.WriteLine("canceled3");
@@ -114,7 +115,8 @@ namespace CMDuplicatesFinder
                             Trace.WriteLine("canceled");
                             e.Cancel = true;
                             break;
-                        }
+                        }               
+
                         /*gets a list of duplicate staff from c++ layer and splits it in 3 strings:
                          *the first contains the status ('1' == completed and '0' == in progress), for internal use by the code only
                          *the second is the number of staffs already checked, for internal use by the code only,

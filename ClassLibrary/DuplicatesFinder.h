@@ -23,20 +23,29 @@ public:
 			if (staffCount >= 0) {
 				//adds staff to vector
 				Staff s = getStaffFromLine(wholeCsv, staffCount);
-				staffVector.push_back(s);
+				if (s.id >= 0) {
+					staffVector.push_back(s);
 
-				//calculates the hash of the vector, for use in the pause/resume feature
-				vectorHash = Staff::combineHash(vectorHash, s.getHash());
+					//calculates the hash of the vector, for use in the pause/resume feature
+					vectorHash = Staff::combineHash(vectorHash, s.getHash());
 
-				if (staffCount % 1000 == 0) {
-					Console::WriteLine("Progress: staff count: {0}; Hash so far: {1}", staffCount, vectorHash);
+					/*if (staffCount % 1000 == 0) {
+						Console::WriteLine("Progress: staff count: {0}; Hash so far: {1}", staffCount, vectorHash);
+					}*/
 				}
+				else {
+					//s.id < 0 means it read an empty line, so we ignore and reduce staffCount
+					staffCount--;
+				}				
 			}
 			else {
 				//skips header
 				getStaffFromLine(wholeCsv, staffCount);
 			}
 			staffCount++;
+		}		
+		if (staffCount < 0) {
+			staffCount = 0;
 		}
 		Console::WriteLine("Parsed {0} staff. Final vector hash {1}", staffCount, vectorHash);		
 
@@ -56,12 +65,18 @@ public:
 
 	/*finds some duplicates and returns the current list of duplicates as an string*/
 	std::string findDuplicates() {		
-		Console::WriteLine("findDuplicates");	
+		Console::WriteLine("findDuplicates");
 
 		if (firstIteration) {
 			//returs an empty printable list in the first iteration so that the user can have an initial visual feedback
 			firstIteration = false;
-			return printableDuplicatesList(duplicates, staffVector, i->id);
+			if (staffVector.size() <= 0) {
+				//the csv file is empty, so we pass -1 as the currentStaffId
+				return printableDuplicatesList(duplicates, staffVector, -1);
+			}
+			else {
+				return printableDuplicatesList(duplicates, staffVector, i->id);
+			}
 		}
 		
 		//finds the duplicates
@@ -143,7 +158,17 @@ public:
 			}
 		}		
 		
-		return printableDuplicatesList(duplicates, staffVector, i->id - 1);
+		//currentStaffId is set to be the ID of the staff we last checked in the loop
+		int currentStaffId;
+		if (i < staffVector.end()) {
+			//the processing isnt completed yet, so the iterator is pointing to the next staff, so we subtract 1 to get the current staff id
+			currentStaffId = i->id - 1;
+		} else {
+			//the processing is completed, because all staff vector has been checked
+			//so we set the current staff id as the id of the final staff in the vector
+			currentStaffId = staffVector.back().id;			
+		}		
+		return printableDuplicatesList(duplicates, staffVector, currentStaffId);
 	}
 
 
@@ -158,7 +183,7 @@ private:
 
 	//When more than this number of iterations is reached without finding any new duplicates,
 	//we return to c# layer to update the progress bar
-	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 100;	
+	static constexpr int MAX_ITERATIONS_WITHOUT_REPORTING = 250;	
 	
 	//If change this constant here, then the UI in c# side needs to be manually changed as well to reflect the new filename
 	static constexpr char * RESULT_FILENAME = "DuplicatesList.txt";
@@ -166,8 +191,10 @@ private:
 	std::vector<Staff> staffVector;
 	std::vector<std::vector<DuplicateGroup>> duplicates;
 	std::vector<Staff>::iterator i;
-	bool firstIteration = true;
+	bool firstIteration = true;	
 
+	/*returns an string with the duplicates list formated to be displayed to user, and some header for internal use by the app;
+	Note: if the staffVector is empty, pass -1 as currentStaffId*/
 	static std::string printableDuplicatesList(std::vector<std::vector<DuplicateGroup>> duplicates, std::vector<Staff> staffVector, int currentStaffId) {
 		//TODO: sort result by likelly chances with a percentage score based on their similarity substitutions
 		bool isCompleted = false;
@@ -177,7 +204,7 @@ private:
 
 		/*the first two lines of the result string are for internal use by the code, it isn't print to the user, its just
 		to pass progress information between c++ and c# layer*/
-		if (staffVector.size() == currentStaffId + 1) {
+		if (staffVector.size() == currentStaffId + 1) {			
 			isCompleted = true;
 			internalUse += "1";
 		}
@@ -185,6 +212,7 @@ private:
 			internalUse += "0";
 		}
 		internalUse += "\n" + std::to_string(currentStaffId) + "\n";
+		//printUnmanagedString(internalUse);
 
 		result += "DUPLICATES LIST - ";
 		if (isCompleted) {
@@ -244,8 +272,8 @@ private:
 		std::string line;		
 		std::getline(wholeCsv, line);
 
-		if (staffCount < 0) {
-			//ignores header
+		if (staffCount < 0 || line.empty()) {
+			//ignores header and any empty lines
 			Staff staff;
 			return staff;
 		}
@@ -285,5 +313,12 @@ private:
 			staff.push_back("");
 		}*/		
 		return Staff(staffCount, fn, ln, cn, dob, club, loan);
+	}
+
+	/*prints the unmanaged string in managed code*/
+	static void printUnmanagedString(std::string s) {
+		String ^systemstring = gcnew String(s.c_str());
+		Console::WriteLine("{0}", systemstring);
+		delete systemstring;
 	}
 };
