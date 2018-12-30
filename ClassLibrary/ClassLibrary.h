@@ -38,7 +38,7 @@ namespace ClassLibrary {
 				//opens the file
 				std::ifstream myfile(static_cast<char*>(ptrToNativeString.ToPointer()));
 
-				if (myfile.is_open()) {
+				if (myfile) {
 					Console::WriteLine("File opened");
 
 					//reads the whole csv at once into an stringstream			

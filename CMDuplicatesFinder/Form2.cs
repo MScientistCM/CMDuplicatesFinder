@@ -133,10 +133,10 @@ namespace CMDuplicatesFinder
                         else
                         {
                             //still in progress, updates the ui to the user                            
-                            int progress = Int32.Parse(result[RESULT_INDEX_CURRENT_STAFF]) + 2;
+                            int progress = Int32.Parse(result[RESULT_INDEX_CURRENT_STAFF]) + 2;                            
                             worker.ReportProgress(progress, progressReporter);
                             Trace.WriteLine("progress:" + progress);                                                        
-                        }                                                
+                        }
                     }
                     e.Result = progressReporter.GetResult();
                     Trace.WriteLine("Final result:" + e.Result);
@@ -250,6 +250,7 @@ namespace CMDuplicatesFinder
                 //Cancels the asynchronous operation. This can happen if user closed the app while it was doing the processing.
                 Trace.WriteLine("CancelAsync triggered");                
                 backgroundWorker1.CancelAsync();
+                //TODO: when it crashes on exception in c++ side, check if the app stops running if the user clicks X
             }
             else
             {                
