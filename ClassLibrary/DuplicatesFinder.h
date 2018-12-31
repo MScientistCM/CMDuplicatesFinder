@@ -257,8 +257,8 @@ private:
 	static constexpr char * TOOL_VERSION_S = "ToolVersion";
 	static constexpr char * CURRENT_STAFF_ID_S = "CurrentStaffId";
 	static constexpr char * DUP_TYPE_S = "DupType";
-	static constexpr char * GROUP_ID_S = "GroupId";
-	static constexpr char * STAFF_IDS_S = "StaffIds";		
+	static constexpr char * GROUP_ID_S = "G";
+	static constexpr char * STAFF_IDS_S = "S";		
 	
 	std::string staffVectorHash;
 	std::vector<Staff> staffVector;
