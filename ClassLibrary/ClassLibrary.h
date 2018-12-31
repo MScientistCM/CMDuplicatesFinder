@@ -76,11 +76,11 @@ namespace ClassLibrary {
 			releaseCSV();			
 
 			return totalStaff;
-		}
-	
+		}		
+
 		/*finds some duplicates and returns the current list of duplicates as an string*/
 		String^ GetDuplicates() {
-			Console::WriteLine("GetDuplicates");			
+			Console::WriteLine("GetDuplicates");
 
 			/*std::string duplicates = dupFinder->findDuplicates();
 
@@ -90,8 +90,17 @@ namespace ClassLibrary {
 			Console::WriteLine(systemstring);
 
 			return systemstring;*/
-			
+
 			return gcnew String(dupFinder->findDuplicates().c_str());
+		}
+
+		/*called by c# side when the processing is completed, to write the final result into file*/
+		void WriteFinalResult() {
+			Console::WriteLine("WriteFinalResult");
+
+			dupFinder->writeProgressIntoFile();
+
+			return;
 		}
 
 

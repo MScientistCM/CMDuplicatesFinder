@@ -131,12 +131,14 @@ public:
 			firstIteration = false;
 			if (staffVector.size() <= 0) {
 				//the csv file is empty, so we pass -1 as the currentStaffId
-				return printableDuplicatesList(duplicates, staffVector, -1, getPausePath(staffVectorHash));
+				return printableDuplicatesList(-1);				
 			}
 			else {
-				return printableDuplicatesList(duplicates, staffVector, i->id, getPausePath(staffVectorHash));
+				return printableDuplicatesList(i->id);
 			}
 		}
+
+		writeProgressIntoFile();
 		
 		//finds the duplicates
 		int iterMax = i->id + MAX_ITERATIONS_WITHOUT_REPORTING;
@@ -227,7 +229,42 @@ public:
 			//so we set the current staff id as the id of the final staff in the vector
 			currentStaffId = staffVector.back().id;			
 		}		
-		return printableDuplicatesList(duplicates, staffVector, currentStaffId, getPausePath(staffVectorHash));
+		return printableDuplicatesList(currentStaffId);
+	}
+
+	/*saves the formated result duplicates list into a txt file, and pause / resume information into a pause file.*/
+	void writeProgressIntoFile() {
+		//writes the current result into a file for the user
+		std::ofstream resultFile(RESULT_FILENAME, std::ios::binary | std::ios::trunc);
+		if (resultFile) {
+			//resultFile << result;
+			resultFile.write(result.c_str(), sizeof(char)*result.size());
+			/*if (!resultFile) {
+				//TODO: print some message to user if write fail as it probably means the user instaled the app in some admin protected folder
+				Console::WriteLine("duplicates result file write failed");
+			}*/
+			resultFile.close();
+		}
+		else {
+			//TODO: print some message to user if write fail as it probably means the user instaled the app in some admin protected folder
+		}
+
+		//creates the pause data directory if it doesn't exist
+		_mkdir(PAUSE_DIR);
+		//writes the current pause data into a file for the pause resume feature		
+		std::ofstream pauseFile(getPausePath(staffVectorHash), std::ios::binary | std::ios::trunc);
+		if (pauseFile) {
+			//pauseFile << pauseData;
+			pauseFile.write(pauseData.c_str(), sizeof(char)*pauseData.size());
+			/*if (!pauseFile) {
+				//TODO: print some message to user if write fail as it probably means the user instaled the app in some admin protected folder
+				Console::WriteLine("pause file write failed");
+			}*/
+			pauseFile.close();
+		}
+		else {
+			//TODO: print some message to user if write fail as it probably means the user instaled the app in some admin protected folder
+		}
 	}
 
 
@@ -258,33 +295,34 @@ private:
 	static constexpr char * CURRENT_STAFF_ID_S = "CurrentStaffId";
 	static constexpr char * DUP_TYPE_S = "DupType";
 	static constexpr char * GROUP_ID_S = "G";
-	static constexpr char * STAFF_IDS_S = "S";		
+	static constexpr char * STAFF_IDS_S = "S";
 	
 	std::string staffVectorHash;
+	std::string pauseData;
+	std::string result;
 	std::vector<Staff> staffVector;
 	std::vector<std::vector<DuplicateGroup>> duplicates;
 	std::vector<Staff>::iterator i;
-	bool firstIteration = true;	
+	bool firstIteration = true;		
 
 	/*returns an string with the duplicates list formated to be displayed to user, and some header for internal use by the app;
-	Also, saves the formated list into a txt file, and pause/resume information into a pause file.
+	Also, prepares pause/resume information to be saved into a pause file.
 	Note: if the staffVector is empty, pass -1 as currentStaffId*/
-	static std::string printableDuplicatesList(std::vector<std::vector<DuplicateGroup>> duplicates, std::vector<Staff> staffVector, int currentStaffId, std::string pausePath) {
+	std::string printableDuplicatesList(int currentStaffId) {
 		//TODO: sort result by likelly chances with a percentage score based on their similarity substitutions?
 		bool isCompleted = false;
 		float progress = 100.0;
-		std::string internalUse;
-		std::string result;
+		std::string internalUse;		
 		
 		//prepares the strings for the pause data
-		std::string pauseData(PAUSE_HEADER);
+		std::string ph(PAUSE_HEADER);
 		std::string tvs(TOOL_VERSION_S);
 		std::string tv(TOOL_VERSION);
 		std::string dt(DUP_TYPE_S);
 		std::string gi(GROUP_ID_S);
 		std::string si(STAFF_IDS_S);
 		std::string csi(CURRENT_STAFF_ID_S);
-		pauseData += tvs + ";" + tv + ";;\r\n";
+		pauseData = ph + tvs + ";" + tv + ";;\r\n";
 		pauseData += csi + ";" + std::to_string(currentStaffId) + ";;\r\n";
 
 		/*the first two lines of the result string are for internal use by the code, it isn't print to the user, its just
@@ -299,9 +337,9 @@ private:
 		internalUse += "\n" + std::to_string(currentStaffId) + "\n";
 		//printUnmanagedString(internalUse);
 
-		result += "DUPLICATES LIST - ";
+		result = "DUPLICATES LIST - ";
 		if (isCompleted) {
-			result += "FULL ";			
+			result += "FULL ";
 		}
 		else {
 			result += "PARTIAL ";
@@ -324,7 +362,7 @@ private:
 			result += " SO FAR";
 		}
 		result += "):\r\n";
-		result += "Legend: (FN = First name; LN = Last name; CN = Common name; DOB = Date of birth)\r\n";	
+		result += "Legend: (FN = First name; LN = Last name; CN = Common name; DOB = Date of birth)\r\n";
 		 
 		for (int i = 0; i < DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES; ++i)
 		{
@@ -342,44 +380,12 @@ private:
 					result += "    DUPLICATE GROUP ID " + DuplicateGroup::getGroupIdTitle(i) + std::to_string(j->groupId) + ":\r\n";
 					for (std::unordered_set<int>::iterator k = j->staffIds.begin(); k != j->staffIds.end(); ++k) {
 						pauseData += ";" + std::to_string(*k);
-						result += "        " + staffVector.at(*k).print() + "\r\n"; 
+						result += "        " + staffVector.at(*k).print() + "\r\n";
 					}
 					pauseData += ";;\r\n";
 				}
 			}			
-		}
-
-		//writes the current result into a file for the user
-		std::ofstream resultFile(RESULT_FILENAME, std::ios::binary | std::ios::trunc);
-		if(resultFile){
-			//resultFile << result;
-			resultFile.write(result.c_str(), sizeof(char)*result.size());	
-			/*if (!resultFile) {
-				//TODO: print some message to user if write fail as it probably means the user instaled the app in some admin protected folder
-				Console::WriteLine("duplicates result file write failed");
-			}*/
-			resultFile.close();
-		}
-		else {
-			//TODO: print some message to user if write fail as it probably means the user instaled the app in some admin protected folder
-		}
-
-		//creates the pause data directory if it doesn't exist
-		_mkdir(PAUSE_DIR);
-		//writes the current pause data into a file for the pause resume feature		
-		std::ofstream pauseFile(pausePath, std::ios::binary | std::ios::trunc);
-		if (pauseFile) {
-			//pauseFile << pauseData;
-			pauseFile.write(pauseData.c_str(), sizeof(char)*pauseData.size());
-			/*if (!pauseFile) {
-				//TODO: print some message to user if write fail as it probably means the user instaled the app in some admin protected folder
-				Console::WriteLine("pause file write failed");
-			}*/
-			pauseFile.close();
-		}
-		else {
-			//TODO: print some message to user if write fail as it probably means the user instaled the app in some admin protected folder
-		}
+		}		
 
 		return internalUse + result;
 	}

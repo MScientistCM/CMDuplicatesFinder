@@ -144,6 +144,9 @@ namespace CMDuplicatesFinder
                     {
                         Trace.WriteLine("canceled4");
                         e.Cancel = true;                        
+                    } else { 
+                        //the processing is completed and the user didnt cancel it, so we write the final result into file
+                        instance.WriteFinalResult();
                     }
                 }                
             } else
