@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DOB.h"
+#include <algorithm>
 
 //using namespace System;
 
@@ -211,13 +212,16 @@ public:
 		return  + "FN: " + (firstNamePrintable.empty() ? NONE : firstNamePrintable) + "; LN: " + (lastNamePrintable.empty() ? NONE : lastNamePrintable) + "; CN: " + (commonNamePrintable.empty() ? NONE : commonNamePrintable) + "; DOB: " + dob.print() + "; CLUB: " + (clubPrintable.empty() ? NONE : clubPrintable) + "; LOAN: " + (loanPrintable.empty() ? NONE : loanPrintable) + "; STAFF ID: " + std::to_string(id);
 	}
 
-private:
+private:	
 
 	static constexpr char * NONE = "[None]";	
 
 	static constexpr size_t HASHER_MAGIC_NUMBER = 3;//a number known to give good scrambling when combining hash numbers
-	
-	static constexpr float SIMILAR_PERCENTAGE = .75f;// .75 means the names need to be at least 75% similar to be considered similar
+
+	static constexpr int MAX_STRING_LENGTH = 100;	
+
+	//TODO:maybe use two numbers: one .75 to consider equal, one .60 to consider similar
+	static constexpr float SIMILAR_PERCENTAGE = .75f;// .75 means the names need to be at least 75% similar to be considered equal
 	static constexpr int MIDDLENAME_FACTOR = 4; //number of chars to look for in the extremities of a fullname, to identify cases where middle name is missing
 	static constexpr int MIDDLENAME_MIN_LENGTH = MIDDLENAME_FACTOR * 2; //minnimun lenght of fullnames to check for in the missing middlename algorithm
 	
@@ -227,6 +231,8 @@ private:
 		}
 	}
 
+	//TODO: maybe make i equal to y and v equal to w, c q qu and k equal and this type of similar char substitution
+	//TODO: maybe make double chars like ss equal to single s, rr to r, etc, to detect tipos like alessandro vs alesandro
 	static char getNormalizedChar(char c) {
 		if (c >= 97 && c <= 122) {//all lowercase ASCII letter chars, returns them unmodified
 			return c;
@@ -314,13 +320,198 @@ private:
 		//All remaining non-letter chars are discarded for simplifiying and optimizing the algorythm
 		return 0;
 	}
+
+	/**
+	returns true if the strings aren't empty and are similar by SIMILAR_PERCENTAGE or more in distance,
+	returns false otherwise
+	Its an implementation of the Levenshtein algorithm based on https://www.lemoda.net/c/edit-distance-with-max/
+
+	//TODO: ideally, transpositions should count as 1 and not 2 changes
+	//TODO: after each levenshtein comparison, store the result in a table so that when 2 strings are levenshtein compared then first check their hashes in the table to see if they were already compared to skip levenshtein comparison
+	*/
+	static bool isLevenshteinEqual(std::string s1, std::string s2)
+	{		
+		int len1 = s1.length();
+		int len2 = s2.length();
+		int maxDist = getMaxEditDistance(len1, len2);
+
+		if (maxDist <= 0) {
+			return false;
+		}
+
+		if (len2 > MAX_STRING_LENGTH) {
+			return false;
+		}
 		
+		//ideally should use [len2 + 1] but C++ doesn't allow it so we use [MAX_STRING_LENGTH + 1]				
+		int matrix[2][MAX_STRING_LENGTH + 1];		
+
+		/*
+		  Initialize the 0 row of "matrix".
+			0
+			1
+			2
+			3
+		 */
+		for (int j = 0; j <= len2; j++) {
+			matrix[0][j] = j;
+		}
+
+		/* Loop over column. */
+		for (int i = 1; i <= len1; i++) {
+			char c1;
+			/* The first value to consider of the ith column. */
+			int min_j;
+			/* The last value to consider of the ith column. */
+			int max_j;
+			/* The smallest value of the matrix in the ith column. */
+			int col_min;
+			/* The next column of the matrix to fill in. */
+			int next;
+			/* The previously-filled-in column of the matrix. */
+			int prev;
+
+			c1 = s1[i - 1];
+			min_j = 1;
+			if (i > maxDist) {
+				min_j = i - maxDist;
+			}
+			max_j = len2;
+			if (len2 > maxDist + i) {
+				max_j = maxDist + i;
+			}
+			col_min = INT_MAX;
+			next = i % 2;
+			if (next == 1) {
+				prev = 0;
+			}
+			else {
+				prev = 1;
+			}
+			matrix[next][0] = i;
+			/* Loop over rows. */
+			for (int j = 1; j <= len2; j++) {
+				if (j < min_j || j > max_j) {
+					/* Put a large value in there. */
+					matrix[next][j] = maxDist + 1;
+				}
+				else {
+					char c2;
+
+					c2 = s2[j - 1];
+					if (c1 == c2) {
+						/* The character at position i in s1 is the same as
+						   the character at position j in s2. */
+						matrix[next][j] = matrix[prev][j - 1];
+					}
+					else {
+						/* The character at position i in s1 is not the
+						   same as the character at position j in s2, so
+						   work out what the minimum cost for getting to cell
+						   i, j is. */
+						int del;
+						int insert;
+						int substitute;
+						int minimum;
+
+						del = matrix[prev][j] + 1;
+						insert = matrix[next][j - 1] + 1;
+						substitute = matrix[prev][j - 1] + 1;
+						minimum = del;
+						if (insert < minimum) {
+							minimum = insert;
+						}
+						if (substitute < minimum) {
+							minimum = substitute;
+						}
+						matrix[next][j] = minimum;
+					}
+				}
+				/* Find the minimum value in the ith column. */
+				if (matrix[next][j] < col_min) {
+					col_min = matrix[next][j];
+				}
+			}
+			if (col_min > maxDist) {
+				/* All the elements of the ith column are greater than the
+				   maximum, so no match less than or equal to maxDist can be
+				   found by looking at succeeding columns. */
+				return false;
+			}
+		}
+		return matrix[len1 % 2][len2] <= maxDist;		
+	}	
+
+	/**
+	given the lengths of 2 strings, returns the greater than 0 max allowed edit distance based on the SIMILAR_PERCENTAGE,
+	or returns 0 if its sure the strings cant be considered equal given their lengths
+	*/
+	static int getMaxEditDistance(int len1, int len2) {
+		//returns false if length of one string is equal to 0		
+		if (len1 <= 0 || len2 <= 0) {
+			return 0;
+		}		
+
+		int maxLen = std::max(len1, len2);
+		int minLen = std::min(len1, len2);
+
+		//calculates the max distance they can have to be considered equal based on SIMILAR_PERCENTAGE		
+		int maxDist = (int)((1.0f - SIMILAR_PERCENTAGE) * maxLen);
+
+		//max distance lower than 1 means the strings are too small to be compared based on SIMILAR_PERCENTAGE, so we return 0
+		if (maxDist < 1) {
+			return 0;
+		}
+
+		//if the difference in lenghts between both strings are greater than maxDist, we are sure they wont be considered equal, so we return 0
+		if (maxLen - minLen > maxDist) {
+			return 0;
+		}
+
+		return maxDist;
+	}
+
+	/**
+	returns true if the common name of s2, when Levenshtein compared with the full name of s1, can be considered equal, returns false otherwise
+	*/
+	static bool isCommonFullLevEqual(Staff s1, Staff s2) {	
+		//instead of simply comparing the common name of one with the full name of other via Levenshtein, 
+		//we split the common name in two and compare it twice, one time the left portion with the first name and another time
+		//the right portion with the last name, otherwise it would produce too many false positives		
+		int s2CNLen = s2.commonName.length();
+		int s1FNLen = s1.firstName.length();
+		int s1LNLen = s1.lastName.length();
+
+		if (s1FNLen <= 0 || s1LNLen <= 0) {
+			return false;
+		}
+
+		if (s2CNLen > s1FNLen && s2CNLen > s1LNLen) {
+			if (getMaxEditDistance(s1.fullName.length(), s2CNLen) <= 0) {
+				return false;
+			}						
+					
+			if (isLevenshteinEqual(s2.commonName.substr(0, s1FNLen), s1.firstName)
+				&&
+				isLevenshteinEqual(s2.commonName.substr(s1FNLen, s2CNLen - s1FNLen), s1.lastName)) {
+				return true;
+			}
+			//TODO: if one of the two levenshtein comparisons above is true but the other is false, we could
+			//consider the names as being at least similar			
+		}
+		return false;
+	}
+
+	//TODO: how to detect this case as having equal names instead of similar, but preventing false positives like Dani vs Javi Ceballos?:
+		//FN: Baggio; LN: Rakotonomenjanahary; CN: [None]; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID: 2909
+		//FN: John Baggio; LN: Rakotonomenjanahary; CN: John Baggio; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID : 135149
+			
 	/**
 	compares fullname, common name, first name and last name of two staffs to determine if the names can
 	be considered equal, similar or different
 	*/
 	static int CompareName(Staff s1, Staff s2, bool abortIfNotEqual = false) {
-		//if commonname of one is equal to full name of other, considers them as having equal names
+		//if common name of one is equal to full name of other, considers them as having equal names
 		if (!s1.commonName.empty() && s1.commonNameH == s2.fullNameH) {
 			return DuplicateGroup::EQUAL;
 		}
@@ -328,103 +519,68 @@ private:
 			return DuplicateGroup::EQUAL;
 		}
 
+		//compares full name of both staff
+		if (!s1.fullName.empty() && s1.fullNameH == s2.fullNameH) {
+			//the full names are equal
+			return DuplicateGroup::EQUAL;
+		}		
+		
 		//if first and last name is inverted between both staff, considers their names as equal because its a very common editting mistake
-		if (!s1.firstName.empty() && !s1.lastName.empty()) {
+		if (!s1.firstName.empty() && !s1.lastName.empty()) {			
 			if (s1.firstNameH == s2.lastNameH && s1.lastNameH == s2.firstNameH) {
 				return DuplicateGroup::EQUAL;
-			}
+			}			
+			if (
+				(s1.firstNameH == s2.lastNameH || isLevenshteinEqual(s1.firstName, s2.lastName))
+				&&
+				(s1.lastNameH == s2.firstNameH || isLevenshteinEqual(s1.lastName, s2.firstName))
+				) {
+				return DuplicateGroup::EQUAL;
+			}			
+		}		
+
+		//now compare the common with full names as we did above, but now via levenshtein checks, to see if the names can still be considered equal			
+		if (isCommonFullLevEqual(s1, s2) || isCommonFullLevEqual(s2, s1)) {
+			return DuplicateGroup::EQUAL;
 		}
 
-		int s1len = s1.fullName.length();
-		int s2len = s2.fullName.length();
-		//compares full name of both staff
-		if (s1len > 0 && s2len > 0) {
-			if (s1len == s2len) {
-				if (s1.fullNameH == s2.fullNameH) {
-					//the full names are equal
-					return DuplicateGroup::EQUAL;
-				}
-
-				if (abortIfNotEqual) {
-					//abortIfNotEqual is for optimization purposes, its true when we only care if the names are equal or
-					//different (i.e. when similar doesnt matter)
-					return DuplicateGroup::DIFFERENT;
-				}
-
-				//both fullnames have the same lenght, so we compare them char by char to
-				//see if the fullnames are equal, similar or different
-				int subs = 0;
-				int maxSubs = (int)((1.0f - SIMILAR_PERCENTAGE) * s1len);
-				//TODO: this can have one very small optimization: we can break if theres less chars remaining than possible maxSubs being reached
-				for (int i = 0; i < s1len; i++) {
-					if (s1.fullName[i] != s2.fullName[i]) {
-						subs++;
-					}
-					if (subs > maxSubs) {
-						//too many differences, so we break
-						break;
-					}
-				}
-				if (subs <= maxSubs) {
-					if (subs == 0) {
-						//the full names are equal
-						return DuplicateGroup::EQUAL;
-					}
-					//the full names are similar
-					return DuplicateGroup::SIMILAR;
-				}
-				//the full names are different, so we now compare the common, first and last names to 
-				//check	if the names can still be considered similar
-			}
-			else {
-				//both fullnames have different lenghts, so they arent equal, but we
-				//check if one of them may have a missing middle name and can be considered similar, so
-				//this detects cases like "Manoel da Silva" vs "Manoel Pereira da Silva"
-				if (s1len >= MIDDLENAME_MIN_LENGTH && s2len >= MIDDLENAME_MIN_LENGTH) {
-					bool subFound = false;
-					//checks if the first MIDDLENAME_FACTOR chars of both fullnames are equal
-					for (int i = 0; i < MIDDLENAME_FACTOR; i++) {
-						if (s1.fullName[i] != s2.fullName[i]) {
-							//not equal, so we break
-							subFound = true;
-							break;
-						}
-					}
-					if (!subFound) {
-						//the first MIDDLENAME_FACTOR chars of both fullnames are equal, so now we check the last MIDDLENAME_FACTOR chars
-						for (int i = 0; i < MIDDLENAME_FACTOR; i++) {
-							if (s1.fullName[s1len - 1 - i] != s2.fullName[s2len - 1 - i]) {
-								subFound = true;
-								break;
-							}
-						}
-					}
-					if (!subFound) {
-						//both fullnames can be considered similar as one seem to be missing the middle name but the rest seem to be equal
-						return DuplicateGroup::SIMILAR;
-					}
-					//the full names are different, so we now compare the common, first and last names to 
-					//check	if the names can still be considered similar
-				}
-
-				//TODO: perhaps implement some more advanced similar name algorithm, but it could cause very bad performance
-				//TODO: maybe in middle name check we should simply pick the first and last words of the full name and compare them instead of first MIDDLENAME_FACTOR and last MIDDLENAME_FACTOR chars
-			}
+		//compares full names by checking first name and last name separatelly in levenshtein, instead 
+		//of single checking the concatenated first name + last name
+		//because it avoids false positives when first or last name is too small (due to SIMILAR_PERCENTAGE being used instead of a hardcoded maxDistance)
+		//(ex: Javi Castellano vs Dani Castellano would be a false positive that is prevented with this strategy)
+		bool levEqualFN = !s1.firstName.empty() && (s1.firstNameH == s2.firstNameH || isLevenshteinEqual(s1.firstName, s2.firstName));
+		bool levEqualLN = !s1.lastName.empty() && (s1.lastNameH == s2.lastNameH || isLevenshteinEqual(s1.lastName, s2.lastName));
+		if (
+			(levEqualFN && levEqualLN) 
+			|| 
+			(levEqualFN && s1.lastName.empty() && s2.lastName.empty()) 
+			||
+			(levEqualLN && s1.firstName.empty() && s2.firstName.empty())
+			) {
+			return DuplicateGroup::EQUAL;
 		}
 
+		if (abortIfNotEqual) {
+			//abortIfNotEqual is for optimization purposes, its true when we only care if the names are equal or
+			//different (i.e. when similar doesnt matter)
+			return DuplicateGroup::DIFFERENT;
+		}		
+
+		//the names cant be considered equal, so now we check if they can be considered similar,
+		//first comparing hashes only, then comparing via levenshtein
+
+		//compares first name of both staff, and if equal considers them as having similar name
+		if (levEqualFN) {
+			return DuplicateGroup::SIMILAR;
+		}
+		//compares last name of both staff, and if equal considers them as having similar name
+		if (levEqualLN) {
+			return DuplicateGroup::SIMILAR;
+		}
 		//compares common name of both staff, and if equal considers them as having similar name
 		if (!s1.commonName.empty() && s1.commonNameH == s2.commonNameH) {
 			return DuplicateGroup::SIMILAR;
 		}
-		//compares first name of both staff, and if equal considers them as having similar name
-		if (!s1.firstName.empty() && s1.firstNameH == s2.firstNameH) {
-			return DuplicateGroup::SIMILAR;
-		}
-		//compares last name of both staff, and if equal considers them as having similar name
-		if (!s1.lastName.empty() && s1.lastNameH == s2.lastNameH) {
-			return DuplicateGroup::SIMILAR;
-		}
-
 		//compares fullName of one with first and last name of other, and if equal considers them as having similar name
 		if (!s1.fullName.empty() && (s1.fullNameH == s2.firstNameH || s1.fullNameH == s2.lastNameH)) {
 			return DuplicateGroup::SIMILAR;
@@ -444,6 +600,63 @@ private:
 			return DuplicateGroup::SIMILAR;
 		}
 		if (!s2.firstName.empty() && s2.firstNameH == s1.lastNameH) {
+			return DuplicateGroup::SIMILAR;
+		}
+
+		//check if one of them may have a missing middle name and can be considered similar, so
+		//this detects cases like "Manoel da Silva" vs "Manoel Pereira da Silva"
+		int s1len = s1.fullName.length();
+		int s2len = s2.fullName.length();
+		if (s1len >= MIDDLENAME_MIN_LENGTH && s2len >= MIDDLENAME_MIN_LENGTH) {
+			bool subFound = false;
+			//checks if the first MIDDLENAME_FACTOR chars of both fullnames are equal
+			for (int i = 0; i < MIDDLENAME_FACTOR; i++) {
+				if (s1.fullName[i] != s2.fullName[i]) {
+					//not equal, so we break
+					subFound = true;
+					break;
+				}
+			}
+			if (!subFound) {
+				//the first MIDDLENAME_FACTOR chars of both fullnames are equal, so now we check the last MIDDLENAME_FACTOR chars
+				for (int i = 0; i < MIDDLENAME_FACTOR; i++) {
+					if (s1.fullName[s1len - 1 - i] != s2.fullName[s2len - 1 - i]) {
+						subFound = true;
+						break;
+					}
+				}
+			}
+			if (!subFound) {
+				//both fullnames can be considered similar as one seem to be missing the middle name but the rest seem to be equal						
+				return DuplicateGroup::SIMILAR;
+			}
+			//TODO: maybe in this middle name check we should simply pick the first and last words of the full name and compare them instead of first MIDDLENAME_FACTOR and last MIDDLENAME_FACTOR chars
+			//TODO: maybe this middle name check should return exactly how many equal chars in begin and end so that we can decide with a threashold if the number is big they will be considered equal. This is to pick cases like: 
+				/*FN: Farid Abdel; LN: Zato - Arouna; CN: [None]; DOB: 24.04.1975; CLUB: [None]; LOAN: [None]; STAFF ID : 1470
+				FN : Farid; LN: Zato - Arouna; CN: [None]; DOB: 24.04.1975; CLUB: UMF Víkingur Ólafsvík; LOAN: [None]; STAFF ID : 111797*/
+		}
+
+		
+		//hashes compared, so now we repeat the same comparisons but using levenshtein		
+		if (isLevenshteinEqual(s1.commonName, s2.commonName)) {
+			return DuplicateGroup::SIMILAR;
+		}			
+		if (isLevenshteinEqual(s1.fullName, s2.firstName) || isLevenshteinEqual(s1.fullName, s2.lastName)) {
+			return DuplicateGroup::SIMILAR;
+		}
+		if (isLevenshteinEqual(s2.fullName, s1.firstName) || isLevenshteinEqual(s2.fullName, s1.lastName)) {
+			return DuplicateGroup::SIMILAR;
+		}		
+		if (isLevenshteinEqual(s1.commonName, s2.firstName) || isLevenshteinEqual(s1.commonName, s2.lastName)) {
+			return DuplicateGroup::SIMILAR;
+		}
+		if (isLevenshteinEqual(s2.commonName, s1.firstName) || isLevenshteinEqual(s2.commonName, s1.lastName)) {
+			return DuplicateGroup::SIMILAR;
+		}		
+		if (isLevenshteinEqual(s1.firstName, s2.lastName)) {
+			return DuplicateGroup::SIMILAR;
+		}
+		if (isLevenshteinEqual(s2.firstName, s1.lastName)) {
 			return DuplicateGroup::SIMILAR;
 		}
 

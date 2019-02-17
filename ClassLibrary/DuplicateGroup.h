@@ -23,7 +23,8 @@ public:
 	static constexpr int DUPLICATE_TYPE_SSE = 4;
 	static constexpr int DUPLICATE_TYPE_ESD = 5;
 	//TODO: maybe divide the EDE into ESE and EDE?
-	//TODO: maybe include a SSD type?
+	//TODO: maybe include a SSD and a SDE type?
+	//TODO: add option to include below types:
 	//these 3 result in too many false positives, so they are disabled for now:
 	static constexpr int DUPLICATE_TYPE_DEE = 6;
 	static constexpr int DUPLICATE_TYPE_SED = 7;
