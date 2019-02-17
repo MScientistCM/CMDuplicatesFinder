@@ -22,10 +22,8 @@ public:
 			day = std::stoi(dobString.substr(DAY_INDEX, DAY_LENGTH), nullptr, 10);
 			month = std::stoi(dobString.substr(MONTH_INDEX, MONTH_LENGTH), nullptr, 10);
 			year = std::stoi(dobString.substr(YEAR_INDEX, YEAR_LENGTH), nullptr, 10);
-		}
-		//considers dates of first of january as invalid because theres too many of them in the database and
-		//it would produce too many false positive duplicates
-		isValid = (day > 0 && month > 0 && year > 0) && !(day == 1 && month == 1);
+		}		
+		isValid = day > 0 && month > 0 && year > 0;
 	}
 	
 	static int Compare(DOB d1, DOB d2)
