@@ -61,6 +61,7 @@ public:
 		}
 		return DuplicateGroup::DIFFERENT;
 		//TODO maybe same year should be similar date becoz sometimes only year is input
+		//TODO maybe dates that differ from 5 days or less should be considered equal instead of similar because its a very common mistake
 	}
 
 	std::string print()

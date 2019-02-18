@@ -231,7 +231,7 @@ private:
 		}
 	}
 
-	//TODO: maybe make i equal to y and v equal to w, c q qu and k equal and this type of similar char substitution
+	//TODO: maybe make i equal to y and v equal to w, c q qu ck and k equal (but c could equal ss too), ks and x equal (but x could equal z too) and this type of similar char substitution
 	//TODO: maybe make double chars like ss equal to single s, rr to r, etc, to detect tipos like alessandro vs alesandro
 	static char getNormalizedChar(char c) {
 		if (c >= 97 && c <= 122) {//all lowercase ASCII letter chars, returns them unmodified
@@ -329,11 +329,11 @@ private:
 	//TODO: ideally, transpositions should count as 1 and not 2 changes
 	//TODO: after each levenshtein comparison, store the result in a table so that when 2 strings are levenshtein compared then first check their hashes in the table to see if they were already compared to skip levenshtein comparison
 	*/
-	static bool isLevenshteinEqual(std::string s1, std::string s2)
+	static bool isLevenshteinEqual(std::string s1, std::string s2, bool isFullName = false)
 	{		
 		int len1 = s1.length();
 		int len2 = s2.length();
-		int maxDist = getMaxEditDistance(len1, len2);
+		int maxDist = getMaxEditDistance(len1, len2, isFullName);
 
 		if (maxDist <= 0) {
 			return false;
@@ -446,7 +446,7 @@ private:
 	given the lengths of 2 strings, returns the greater than 0 max allowed edit distance based on the SIMILAR_PERCENTAGE,
 	or returns 0 if its sure the strings cant be considered equal given their lengths
 	*/
-	static int getMaxEditDistance(int len1, int len2) {
+	static int getMaxEditDistance(int len1, int len2, bool isFullName = false) {
 		//returns false if length of one string is equal to 0		
 		if (len1 <= 0 || len2 <= 0) {
 			return 0;
@@ -457,10 +457,25 @@ private:
 
 		//calculates the max distance they can have to be considered equal based on SIMILAR_PERCENTAGE		
 		int maxDist = (int)((1.0f - SIMILAR_PERCENTAGE) * maxLen);
-
+		
 		//max distance lower than 1 means the strings are too small to be compared based on SIMILAR_PERCENTAGE, so we return 0
-		if (maxDist < 1) {
+		if (maxDist < 1) {			
 			return 0;
+		}
+		
+		if (isFullName && maxDist > 1) {
+			//when the names being compared are full names we divide the max allowed Levenshtein distance by two to prevent lots of false positives
+			maxDist = maxDist / 2;
+
+			//TODO: how to detect these cases as having equal names instead of similar, but preventing false positives like Dani vs Javi Castellano and Rui vs Luis Silva?:
+				//FN: Baggio; LN: Rakotonomenjanahary; CN: [None]; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID: 2909
+				//FN: John Baggio; LN: Rakotonomenjanahary; CN: John Baggio; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID : 135149
+				//FN: Maxim; LN: Kirsanov; CN: [None]; DOB: 08.05.1970; CLUB: Vityaz Podolsk; LOAN: [None]; STAFF ID : 2345
+				//FN : Maksim; LN: Kirsanov; CN: [None]; DOB: 08.05.1970; CLUB: FC Zugdidi; LOAN: [None]; STAFF ID : 139819
+				//FN: Yassine; LN: Bezzaz; CN: [None]; DOB: 10.07.1964; CLUB: MC El Eulma; LOAN: [None]; STAFF ID : 1183
+				//FN : Yacine; LN: Bezzaz; CN: [None]; DOB: 09.07.1964; CLUB: CS Constantine; LOAN: [None]; STAFF ID : 114431
+				//I think the answer is: add an option to be more aggressive in the algorithm, so it will find more duplicates at the cost of finding more false positives
+				//So, when the user enables that option, it will simply skip this 'if' check
 		}
 
 		//if the difference in lenghts between both strings are greater than maxDist, we are sure they wont be considered equal, so we return 0
@@ -500,11 +515,7 @@ private:
 			//consider the names as being at least similar			
 		}
 		return false;
-	}
-
-	//TODO: how to detect this case as having equal names instead of similar, but preventing false positives like Dani vs Javi Ceballos?:
-		//FN: Baggio; LN: Rakotonomenjanahary; CN: [None]; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID: 2909
-		//FN: John Baggio; LN: Rakotonomenjanahary; CN: John Baggio; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID : 135149
+	}	
 			
 	/**
 	compares fullname, common name, first name and last name of two staffs to determine if the names can
@@ -544,8 +555,13 @@ private:
 			return DuplicateGroup::EQUAL;
 		}
 
+		//compares full names via levenshtein passing true as a parameter to be more conservative and avoid too many false positives
+		if (isLevenshteinEqual(s1.fullName, s2.fullName, true)) {
+			return DuplicateGroup::EQUAL;
+		}
+
 		//compares full names by checking first name and last name separatelly in levenshtein, instead 
-		//of single checking the concatenated first name + last name
+		//of single checking the concatenated first name + last name as we did above
 		//because it avoids false positives when first or last name is too small (due to SIMILAR_PERCENTAGE being used instead of a hardcoded maxDistance)
 		//(ex: Javi Castellano vs Dani Castellano would be a false positive that is prevented with this strategy)
 		bool levEqualFN = !s1.firstName.empty() && (s1.firstNameH == s2.firstNameH || isLevenshteinEqual(s1.firstName, s2.firstName));
