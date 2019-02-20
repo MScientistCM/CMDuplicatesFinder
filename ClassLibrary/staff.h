@@ -216,9 +216,7 @@ private:
 
 	static constexpr char * NONE = "[None]";	
 
-	static constexpr size_t HASHER_MAGIC_NUMBER = 3;//a number known to give good scrambling when combining hash numbers
-
-	static constexpr int MAX_STRING_LENGTH = 100;	
+	static constexpr size_t HASHER_MAGIC_NUMBER = 3;//a number known to give good scrambling when combining hash numbers	
 
 	//TODO:maybe use two numbers: one .75 to consider equal, one .60 to consider similar
 	static constexpr float SIMILAR_PERCENTAGE = .75f;// .75 means the names need to be at least 75% similar to be considered equal
@@ -231,7 +229,7 @@ private:
 		}
 	}
 
-	//TODO: maybe make i equal to y and v equal to w, c q qu ck and k equal (but c could equal ss too), ks and x equal (but x could equal z too) and this type of similar char substitution
+	//TODO: maybe make 0 equal to o, i equal to y and v equal to w, c q qu ck and k equal (but c could equal ss too), ks and x equal (but x could equal z too) and this type of similar char substitution
 	//TODO: maybe make double chars like ss equal to single s, rr to r, etc, to detect tipos like alessandro vs alesandro
 	static char getNormalizedChar(char c) {
 		if (c >= 97 && c <= 122) {//all lowercase ASCII letter chars, returns them unmodified
@@ -320,17 +318,18 @@ private:
 		//All remaining non-letter chars are discarded for simplifiying and optimizing the algorythm
 		return 0;
 	}
-
+	
 	/**
 	returns true if the strings aren't empty and are similar by SIMILAR_PERCENTAGE or more in distance,
 	returns false otherwise
-	Its an implementation of the Levenshtein algorithm based on https://www.lemoda.net/c/edit-distance-with-max/
-
-	//TODO: ideally, transpositions should count as 1 and not 2 changes
+	both strings should be lower case
+	
+	Its an implementation of the Damerau-Levenshtein algorithm based on https://github.com/PierreBoyeau/levenshtein_distance
+		
 	//TODO: after each levenshtein comparison, store the result in a table so that when 2 strings are levenshtein compared then first check their hashes in the table to see if they were already compared to skip levenshtein comparison
 	*/
 	static bool isLevenshteinEqual(std::string s1, std::string s2, bool isFullName = false)
-	{		
+	{
 		int len1 = s1.length();
 		int len2 = s2.length();
 		int maxDist = getMaxEditDistance(len1, len2, isFullName);
@@ -338,109 +337,32 @@ private:
 		if (maxDist <= 0) {
 			return false;
 		}
-
-		if (len2 > MAX_STRING_LENGTH) {
-			return false;
-		}
 		
-		//ideally should use [len2 + 1] but C++ doesn't allow it so we use [MAX_STRING_LENGTH + 1]				
-		int matrix[2][MAX_STRING_LENGTH + 1];		
+		int suppr_dist, insert_dist, subs_dist, val;
+		int* dist = new int[(len1 + 1)*(len2 + 1)];
 
-		/*
-		  Initialize the 0 row of "matrix".
-			0
-			1
-			2
-			3
-		 */
-		for (int j = 0; j <= len2; j++) {
-			matrix[0][j] = j;
+		for (int i = 0; i < len1 + 1; ++i)
+			dist[(len2 + 1)*i] = i;
+		for (int j = 0; j < len2 + 1; ++j)
+			dist[j] = j;
+		for (int i = 1; i < len1 + 1; ++i) {
+			for (int j = 1; j < len2 + 1; ++j) {
+				suppr_dist = dist[(len2 + 1)*(i - 1) + j] + 1;
+				insert_dist = dist[(len2 + 1)*i + j - 1] + 1;
+				subs_dist = dist[(len2 + 1)*(i - 1) + j - 1];
+				if (s1[i - 1] != s2[j - 1])  // word indexes are implemented differently.
+					subs_dist += 1;
+				val = std::min(suppr_dist, std::min(insert_dist, subs_dist));
+				if (((i >= 2) && (j >= 2)) && ((s1[i - 1] == s2[j - 2]) && (s1[i - 2] == s2[j - 1])))
+					val = std::min(dist[(len2 + 1)*(i - 2) + j - 2] + 1, val);
+				dist[(len2 + 1)*i + j] = val;
+			}
 		}
 
-		/* Loop over column. */
-		for (int i = 1; i <= len1; i++) {
-			char c1;
-			/* The first value to consider of the ith column. */
-			int min_j;
-			/* The last value to consider of the ith column. */
-			int max_j;
-			/* The smallest value of the matrix in the ith column. */
-			int col_min;
-			/* The next column of the matrix to fill in. */
-			int next;
-			/* The previously-filled-in column of the matrix. */
-			int prev;
-
-			c1 = s1[i - 1];
-			min_j = 1;
-			if (i > maxDist) {
-				min_j = i - maxDist;
-			}
-			max_j = len2;
-			if (len2 > maxDist + i) {
-				max_j = maxDist + i;
-			}
-			col_min = INT_MAX;
-			next = i % 2;
-			if (next == 1) {
-				prev = 0;
-			}
-			else {
-				prev = 1;
-			}
-			matrix[next][0] = i;
-			/* Loop over rows. */
-			for (int j = 1; j <= len2; j++) {
-				if (j < min_j || j > max_j) {
-					/* Put a large value in there. */
-					matrix[next][j] = maxDist + 1;
-				}
-				else {
-					char c2;
-
-					c2 = s2[j - 1];
-					if (c1 == c2) {
-						/* The character at position i in s1 is the same as
-						   the character at position j in s2. */
-						matrix[next][j] = matrix[prev][j - 1];
-					}
-					else {
-						/* The character at position i in s1 is not the
-						   same as the character at position j in s2, so
-						   work out what the minimum cost for getting to cell
-						   i, j is. */
-						int del;
-						int insert;
-						int substitute;
-						int minimum;
-
-						del = matrix[prev][j] + 1;
-						insert = matrix[next][j - 1] + 1;
-						substitute = matrix[prev][j - 1] + 1;
-						minimum = del;
-						if (insert < minimum) {
-							minimum = insert;
-						}
-						if (substitute < minimum) {
-							minimum = substitute;
-						}
-						matrix[next][j] = minimum;
-					}
-				}
-				/* Find the minimum value in the ith column. */
-				if (matrix[next][j] < col_min) {
-					col_min = matrix[next][j];
-				}
-			}
-			if (col_min > maxDist) {
-				/* All the elements of the ith column are greater than the
-				   maximum, so no match less than or equal to maxDist can be
-				   found by looking at succeeding columns. */
-				return false;
-			}
-		}
-		return matrix[len1 % 2][len2] <= maxDist;		
-	}	
+		int res = dist[(len1 + 1)*(len2 + 1) - 1];
+		delete dist;		
+		return res <= maxDist;
+	}
 
 	/**
 	given the lengths of 2 strings, returns the greater than 0 max allowed edit distance based on the SIMILAR_PERCENTAGE,
@@ -679,7 +601,7 @@ private:
 		//the names are different
 		return DuplicateGroup::DIFFERENT;
 	}
-
+	
 	static int CompareClub(std::string club1, std::string club2, std::string loan1, std::string loan2, size_t hc1, size_t hc2, size_t hl1, size_t hl2) {
 		//TODO handle case of no club, maybe consider similar club?
 		//TODO detect this type of club similarity: Nomme Kalju FC vs Nomme Kalju FC U21

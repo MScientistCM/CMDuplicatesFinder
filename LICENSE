@@ -23,7 +23,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org>
 
-The only exception to this License is the Levenshtein algorithm 
+The only exception to this License is the Damerau-Levenshtein algorithm 
 implemented in this tool, which is based on an implementation found
-in https://www.lemoda.net/c/edit-distance-with-max/, for which you 
-should follow the License from https://www.lemoda.net.
+in https://github.com/PierreBoyeau/levenshtein_distance, for which you 
+should follow the License from
+https://github.com/PierreBoyeau/levenshtein_distance.
