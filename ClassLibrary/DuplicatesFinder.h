@@ -185,13 +185,17 @@ public:
 						if (i->duplicateGroupId[duplicateType] != j->duplicateGroupId[duplicateType]) {
 							//Console::WriteLine("both are in different duplicate groups for this duplicate type, so we merge their groups");
 							//both are in different duplicate groups for this duplicate type, so we merge their groups
-							for (std::unordered_set<int>::iterator it = duplicates.at(duplicateType).at(j->duplicateGroupId[duplicateType]).staffIds.begin(); 
+							duplicates.at(duplicateType).at(j->duplicateGroupId[duplicateType]).duplicateType = DuplicateGroup::DUPLICATE_TYPE_MERGED;
+							std::vector<int> jStaffIds;
+							for (std::unordered_set<int>::iterator it = duplicates.at(duplicateType).at(j->duplicateGroupId[duplicateType]).staffIds.begin();
 								it != duplicates.at(duplicateType).at(j->duplicateGroupId[duplicateType]).staffIds.end(); ++it)
-							{
+							{								
+								jStaffIds.push_back(*it);
+							}
+							for (std::vector<int>::iterator it = jStaffIds.begin(); it != jStaffIds.end(); ++it) {							
 								duplicates.at(duplicateType).at(i->duplicateGroupId[duplicateType]).addStaffId(*it);
 								staffVector.at(*it).duplicateGroupId[duplicateType] = i->duplicateGroupId[duplicateType];
 							}
-							duplicates.at(duplicateType).at(j->duplicateGroupId[duplicateType]).duplicateType = DuplicateGroup::DUPLICATE_TYPE_MERGED;
 						}
 						else {
 							//Console::WriteLine("both are in the same duplicate group for this duplicate type already, so we do nothing");
