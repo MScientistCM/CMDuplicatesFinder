@@ -196,6 +196,7 @@ public:
 								duplicates.at(duplicateType).at(i->duplicateGroupId[duplicateType]).addStaffId(*it);
 								staffVector.at(*it).duplicateGroupId[duplicateType] = i->duplicateGroupId[duplicateType];
 							}
+							//TODO: when group is merged the duplicate count that is displayed to the user needs to be decremented as it skips a group (like from 28 to 30 without the 29 group)							
 						}
 						else {
 							//Console::WriteLine("both are in the same duplicate group for this duplicate type already, so we do nothing");
@@ -294,7 +295,7 @@ private:
 	
 	//whenever releasing a new version of this tool, this TOOL_VERSION constant needs to be updated too, otherwise pause resume feature may fail
 	//TODO: make this TOOL_VERSION constant to update automatically on new release by passing some version string from C# to this layer
-	static constexpr char * TOOL_VERSION = "v0.4-beta";
+	static constexpr char * TOOL_VERSION = "v0.5-beta";
 	static constexpr char * TOOL_VERSION_S = "ToolVersion";
 	static constexpr char * CURRENT_STAFF_ID_S = "CurrentStaffId";
 	static constexpr char * DUP_TYPE_S = "DupType";
