@@ -229,15 +229,34 @@ private:
 		}
 	}
 
-	//TODO: maybe make 0 equal to o, i equal to y and v equal to w, c q qu ck and k equal (but c could equal ss too), ks and x equal (but x could equal z too) and this type of similar char substitution
+	//TODO: maybe make 0 equal to o, c q qu ck and k equal (but c could equal ss too), ks and x equal (but x could equal z or s too) and this type of similar char substitution
 	//TODO: maybe make double chars like ss equal to single s, rr to r, etc, to detect tipos like alessandro vs alesandro
+	//TODO: german ß should equal s or b? currently its b
 	static char getNormalizedChar(char c) {
-		if (c >= 97 && c <= 122) {//all lowercase ASCII letter chars, returns them unmodified
+		if (c >= 65 && c <= 90) {//all uppercase ASCII letter chars, lower case	them		
+			c = c + 32;
+		}
+		if (c >= 97 && c <= 122) {//all lowercase ASCII letter chars, returns them unmodified except y, k, w, j, q, z
+			if (c == 121) { //replace y with i
+				return 'i';
+			}
+			if (c == 107) { //replace k with c
+				return 'c';
+			}
+			if (c == 119) { //replace w with v
+				return 'v';
+			}
+			if (c == 106) { //replace j with g
+				return 'g';
+			}
+			if (c == 113) { //replace q with c
+				return 'c';
+			}
+			if (c == 122) { //replace z with s
+				return 's';
+			}			
 			return c;
-		}
-		if (c >= 65 && c <= 90) {//all uppercase ASCII letter chars, returns them lower case			
-			return c + 32;
-		}
+		}		
 		if (c == 36) {//'$' simbol returns 's'
 			return 's';
 		}
@@ -266,10 +285,12 @@ private:
 					return 's';
 				}
 				if (c == -114 || c == -98) {
-					return 'z';
+					//return 'z';
+					return 's';
 				}
 				if (c == -97) {
-					return 'y';
+					//return 'y';
+					return 'i';
 				}
 			}
 			else { // all above or equal -95
@@ -284,7 +305,8 @@ private:
 					return '?';
 				}
 				if (c == -91 || c == -35 || c == -3 || c == -1) {
-					return 'y';
+					//return 'y';
+					return 'i';
 				}
 				if (c == -89) {
 					return 's';
@@ -392,10 +414,12 @@ private:
 			//TODO: how to detect these cases as having equal names instead of similar, but preventing false positives like Dani vs Javi Castellano and Rui vs Luis Silva?:
 				//FN: Baggio; LN: Rakotonomenjanahary; CN: [None]; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID: 2909
 				//FN: John Baggio; LN: Rakotonomenjanahary; CN: John Baggio; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID : 135149
+				//FN: Jhon; LN: Garcia Sossa; CN: [None]; DOB: 13.04.1983; CLUB: Huachipato FC; LOAN: [None]; STAFF ID : 140850
+				//FN: John; LN: García; CN: [None]; DOB: 13.04.1983; CLUB: Huachipato FC; LOAN: [None]; STAFF ID : 149243
 				//FN: Maxim; LN: Kirsanov; CN: [None]; DOB: 08.05.1970; CLUB: Vityaz Podolsk; LOAN: [None]; STAFF ID : 2345
-				//FN : Maksim; LN: Kirsanov; CN: [None]; DOB: 08.05.1970; CLUB: FC Zugdidi; LOAN: [None]; STAFF ID : 139819
+				//FN: Maksim; LN: Kirsanov; CN: [None]; DOB: 08.05.1970; CLUB: FC Zugdidi; LOAN: [None]; STAFF ID : 139819
 				//FN: Yassine; LN: Bezzaz; CN: [None]; DOB: 10.07.1964; CLUB: MC El Eulma; LOAN: [None]; STAFF ID : 1183
-				//FN : Yacine; LN: Bezzaz; CN: [None]; DOB: 09.07.1964; CLUB: CS Constantine; LOAN: [None]; STAFF ID : 114431
+				//FN: Yacine; LN: Bezzaz; CN: [None]; DOB: 09.07.1964; CLUB: CS Constantine; LOAN: [None]; STAFF ID : 114431
 				//I think the answer is: add an option to be more aggressive in the algorithm, so it will find more duplicates at the cost of finding more false positives
 				//So, when the user enables that option, it will simply skip this 'if' check
 		}
