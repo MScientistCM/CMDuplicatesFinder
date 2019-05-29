@@ -347,6 +347,14 @@ private:
 	both strings should be lower case
 	
 	Its an implementation of the Damerau-Levenshtein algorithm based on https://github.com/PierreBoyeau/levenshtein_distance
+
+	Other implementations of Damerau-Levenshtein can be found in:
+	https://ideone.com/fork/pp5TH5
+	https://stackoverflow.com/questions/10727174/damerau-levenshtein-distance-edit-distance-with-transposition-c-implementation
+	http://www.talkativeman.com/levenshtein-distance-algorithm-string-comparison/
+	https://github.com/topics/damerau-levenshtein	
+	https://github.com/eloj/fuzzy-search/blob/master/damerau.c
+	https://stackoverflow.com/questions/10178043/levenshtein-edit-distance-algorithm-that-supports-transposition-of-two-adjacent
 		
 	//TODO: after each levenshtein comparison, store the result in a table so that when 2 strings are levenshtein compared then first check their hashes in the table to see if they were already compared to skip levenshtein comparison
 	*/
@@ -421,7 +429,7 @@ private:
 				//FN: Yassine; LN: Bezzaz; CN: [None]; DOB: 10.07.1964; CLUB: MC El Eulma; LOAN: [None]; STAFF ID : 1183
 				//FN: Yacine; LN: Bezzaz; CN: [None]; DOB: 09.07.1964; CLUB: CS Constantine; LOAN: [None]; STAFF ID : 114431
 				//I think the answer is: add an option to be more aggressive in the algorithm, so it will find more duplicates at the cost of finding more false positives
-				//So, when the user enables that option, it will simply skip this 'if' check
+				//So, when the user enables that option, it will simply skip this 'if' check, and/or it will decrease the SIMILAR_PERCENTAGE, or it will round maxDist up when between X.5 and X.99
 		}
 
 		//if the difference in lenghts between both strings are greater than maxDist, we are sure they wont be considered equal, so we return 0

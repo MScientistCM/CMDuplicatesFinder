@@ -4,7 +4,7 @@
 
 /* A duplicate group contains the ids of staffs who are possible duplicates to each other in the given duplicate type */
 public class DuplicateGroup
-{
+{	
 
 public:
 	/*there are 9 different duplicate types, they can be identified by the letters (E is Equal, S is similar and D is different
@@ -98,5 +98,12 @@ public:
 	}
 
 private:
-	
+	//TODO: review when 3 in same group if 2 of them belong to other group what to do? what it is doing? It seems it correctly adds them to 2 groups as in:
+	/*DUPLICATE GROUP ID SSE - 229:
+	FN: József; LN: Nagy; CN: [None]; DOB: 01.01.1971; CLUB: Nyíregyháza Spartacus; LOAN: [None]; STAFF ID : 58032
+	FN : Tamas; LN: Nagy; CN: [None]; DOB: 18.01.1971; CLUB: Nyíregyháza Spartacus; LOAN: [None]; STAFF ID : 61967
+	FN : Tamás; LN: Nagy; CN: [None]; DOB: 18.01.1971; CLUB: Nyíregyháza Spartacus; LOAN: [None]; STAFF ID : 121643
+	so if it is always like that then i think its great*/
+
+	//TODO compare the non accents from transfertool with the accents to see which is better for my tool
 };
