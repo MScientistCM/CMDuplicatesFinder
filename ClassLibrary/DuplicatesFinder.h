@@ -20,10 +20,11 @@ public:
 		//parses the whole csv stringstream		
 		size_t vectorHash = 0;
 		int staffCount = -1;
+		char separator = ';';
 		while (!wholeCsv.eof()) {
 			if (staffCount >= 0) {
 				//adds staff to vector
-				Staff s = getStaffFromLine(wholeCsv, staffCount);
+				Staff s = getStaffFromLine(wholeCsv, staffCount, separator);
 				if (s.id >= 0) {
 					staffVector.push_back(s);
 
@@ -40,8 +41,8 @@ public:
 				}				
 			}
 			else {
-				//skips header
-				getStaffFromLine(wholeCsv, staffCount);
+				//skips header and gets the separator char
+				separator = getSeparatorFromHeader(wholeCsv);
 			}
 			staffCount++;
 		}		
@@ -395,8 +396,21 @@ private:
 		return internalUse + result;
 	}
 
+	/*parses the header of the csv file and returns the separator char*/
+	static char getSeparatorFromHeader(std::stringstream& wholeCsv) {
+		std::string line;
+		std::getline(wholeCsv, line);
+
+		if (!line.empty()) {			
+			if (line.find(';') != std::string::npos)
+				return ';';
+			return ',';			
+		}
+		return ';';
+	}
+
 	/*parses one line of the csv file and returns the corresponding Staff*/
-	static Staff getStaffFromLine(std::stringstream& wholeCsv, int staffCount)
+	static Staff getStaffFromLine(std::stringstream& wholeCsv, int staffCount, char separator)
 	{		
 		std::string line;		
 		std::getline(wholeCsv, line);
@@ -413,7 +427,7 @@ private:
 		
 		int index = 0;
 		std::string cell;
-		while (std::getline(lineStream, cell, ';') && index <= loanIndex)
+		while (std::getline(lineStream, cell, separator) && index <= loanIndex)
 		{
 			if (index == firstNameIndex) {
 				fn = cell;
