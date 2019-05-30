@@ -102,11 +102,11 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(364, 18);
+            this.label4.Location = new System.Drawing.Point(344, 9);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(233, 29);
+            this.label4.Size = new System.Drawing.Size(282, 29);
             this.label4.TabIndex = 5;
-            this.label4.Text = "CMDuplicatesFinder";
+            this.label4.Text = "CMDuplicatesFinder v1.0";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 

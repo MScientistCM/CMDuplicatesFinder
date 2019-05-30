@@ -296,7 +296,7 @@ private:
 	
 	//whenever releasing a new version of this tool, this TOOL_VERSION constant needs to be updated too, otherwise pause resume feature may fail
 	//TODO: make this TOOL_VERSION constant to update automatically on new release by passing some version string from C# to this layer
-	static constexpr char * TOOL_VERSION = "v0.5-beta";
+	static constexpr char * TOOL_VERSION = "v1.0";
 	static constexpr char * TOOL_VERSION_S = "ToolVersion";
 	static constexpr char * CURRENT_STAFF_ID_S = "CurrentStaffId";
 	static constexpr char * DUP_TYPE_S = "DupType";

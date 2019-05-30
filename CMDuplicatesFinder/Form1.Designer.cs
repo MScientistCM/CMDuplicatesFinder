@@ -34,6 +34,8 @@ namespace CMDuplicatesFinder
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.labelFilename = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.label1 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,9 +58,9 @@ namespace CMDuplicatesFinder
             this.helloWorldLabel.Location = new System.Drawing.Point(84, 20);
             this.helloWorldLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.helloWorldLabel.Name = "helloWorldLabel";
-            this.helloWorldLabel.Size = new System.Drawing.Size(372, 26);
+            this.helloWorldLabel.Size = new System.Drawing.Size(378, 26);
             this.helloWorldLabel.TabIndex = 3;
-            this.helloWorldLabel.Text = "Welcome to CMDuplicatesFinder tool";
+            this.helloWorldLabel.Text = "Welcome to CMDuplicatesFinder v1.0";
             // 
             // buttonBrowse
             // 
@@ -99,12 +101,34 @@ namespace CMDuplicatesFinder
             this.openFileDialog1.Title = "Select an exported database .csv file";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(52, 210);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(157, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Need help? Visit the official site:";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(215, 210);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(265, 13);
+            this.linkLabel1.TabIndex = 7;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/MScientistCM/CMDuplicatesFinder";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(544, 202);
+            this.ClientSize = new System.Drawing.Size(544, 232);
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonBrowse);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.helloWorldLabel);
@@ -126,6 +150,8 @@ namespace CMDuplicatesFinder
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label labelFilename;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
 
