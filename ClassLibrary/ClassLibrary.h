@@ -14,12 +14,12 @@ namespace ClassLibrary {
 	public:	
 		
 		~Class1() {
-			Console::WriteLine("Class1 destructor");
+			//Console::WriteLine("Class1 destructor");
 			releaseAllResources();
 		}
 
 		void releaseAllResources() {
-			Console::WriteLine("Class1 releaseAllResources");
+			//Console::WriteLine("Class1 releaseAllResources");
 			releaseCSV();
 			releaseDupFinder();
 		}
@@ -27,8 +27,8 @@ namespace ClassLibrary {
 		/*opens the csv file and reads it into memory at once, and
 		returns true if it was successful or false otherwise*/
 		bool ReadCSVFile(String^ inputFilename) {
-			Console::WriteLine("ReadCSVFile inputFilename:");
-			Console::WriteLine(inputFilename);		
+			//Console::WriteLine("ReadCSVFile inputFilename:");
+			//Console::WriteLine(inputFilename);		
 
 			//converts the String^ to char*
 			IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(inputFilename);
@@ -39,37 +39,37 @@ namespace ClassLibrary {
 				std::ifstream myfile(static_cast<char*>(ptrToNativeString.ToPointer()));
 
 				if (myfile) {
-					Console::WriteLine("File opened");
+					//Console::WriteLine("File opened");
 
 					//reads the whole csv at once into an stringstream			
 					wholeCsv = new std::stringstream();
 					*wholeCsv << myfile.rdbuf();
-					Console::WriteLine("File read");
+					//Console::WriteLine("File read");
 
 					myfile.close();
-					Console::WriteLine("File closed");
+					//Console::WriteLine("File closed");
 					ret = true;
 				}
 				else {
-					Console::WriteLine("Couldnt open the file");
+					//Console::WriteLine("Couldnt open the file");
 				}
 			}
 			catch (...)
 			{
-				Console::WriteLine("Exception");
+				//Console::WriteLine("Exception");
 				Marshal::FreeHGlobal(ptrToNativeString);	
 				ret = false;
 				throw;
 			}
 			Marshal::FreeHGlobal(ptrToNativeString);	
 
-			Console::WriteLine("returning");
+			//Console::WriteLine("returning");
 			return ret; 
 		}
 
 		/*parses the CSV stringstream and returns the number of staff found*/
 		int ParseCSV() {
-			Console::WriteLine("ParseCSV");			
+			//Console::WriteLine("ParseCSV");			
 
 			dupFinder = new DuplicatesFinder();
 			int totalStaff = dupFinder->parse(*wholeCsv);
@@ -80,7 +80,7 @@ namespace ClassLibrary {
 
 		/*finds some duplicates and returns the current list of duplicates as an string*/
 		String^ GetDuplicates() {
-			Console::WriteLine("GetDuplicates");
+			//Console::WriteLine("GetDuplicates");
 
 			/*std::string duplicates = dupFinder->findDuplicates();
 
@@ -96,7 +96,7 @@ namespace ClassLibrary {
 
 		/*called by c# side when the processing is completed, to write the final result into file*/
 		void WriteFinalResult() {
-			Console::WriteLine("WriteFinalResult");
+			//Console::WriteLine("WriteFinalResult");
 
 			dupFinder->writeProgressIntoFile();
 
@@ -110,17 +110,15 @@ namespace ClassLibrary {
 		DuplicatesFinder* dupFinder;
 
 		void releaseCSV() {
-			Console::WriteLine("Class1 releaseCSV");
+			//Console::WriteLine("Class1 releaseCSV");
 			delete wholeCsv;
 			wholeCsv = NULL;
 		}
 
 		void releaseDupFinder() {
-			Console::WriteLine("Class1 releaseDupFinder");
+			//Console::WriteLine("Class1 releaseDupFinder");
 			delete dupFinder;
 			dupFinder = NULL;
 		}
 	};
-
-
 }

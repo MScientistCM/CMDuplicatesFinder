@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClassLibrary;
 
 
 namespace CMDuplicatesFinder
@@ -51,24 +42,23 @@ namespace CMDuplicatesFinder
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            Trace.WriteLine("path:"+path);            
+            //Trace.WriteLine("path:"+path);            
 
             if (!backgroundWorker1.IsBusy)
             {
-                Trace.WriteLine("async trigger");
+                //Trace.WriteLine("async trigger");
                 // Start the asynchronous operation.
                 label1.Text = STATUS_LOADING_CSV;
                 backgroundWorker1.RunWorkerAsync(path);
             }
-
-            //TODO: implement pause so it saves the duplicate arrays to a text file and then it can resume when reopen app            
-            Trace.WriteLine("async operation triggered");            
+                      
+            //Trace.WriteLine("async operation triggered");            
         }
 
         // This event handler is where the time-consuming work is done.
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            Trace.WriteLine("asyncwork "+ (string)e.Argument);
+            //Trace.WriteLine("asyncwork "+ (string)e.Argument);
             BackgroundWorker worker = sender as BackgroundWorker;
 
             ProgressReporter progressReporter = new ProgressReporter(STATUS_LOADING_CSV);
@@ -79,7 +69,7 @@ namespace CMDuplicatesFinder
 
             if(worker.CancellationPending == true)
             {
-                Trace.WriteLine("Cancelation pending");
+                //Trace.WriteLine("Cancelation pending");
                 e.Cancel = true;
             }
             //calls the c++ functions for reading, parsing and finding duplicates, and 
@@ -91,17 +81,17 @@ namespace CMDuplicatesFinder
 
                 if (worker.CancellationPending == true)
                 {
-                    Trace.WriteLine("canceled3");
+                    //Trace.WriteLine("canceled3");
                     e.Cancel = true;
                 }
                 else
                 {
-                    Trace.WriteLine("success reading csv file");
+                    //Trace.WriteLine("success reading csv file");
                     progressReporter.SetStatus(STATUS_PARSING_CSV);
                     worker.ReportProgress(0, progressReporter);
 
                     int totalStaff = instance.ParseCSV();
-                    Trace.WriteLine("total staff:" + totalStaff);
+                    //Trace.WriteLine("total staff:" + totalStaff);
                     progressReporter.SetTotalStaff(totalStaff);
                     progressReporter.SetStatus(STATUS_FINDING_DUPLICATES_1 + totalStaff + STATUS_FINDING_DUPLICATES_2 + STATUS_FINDING_DUPLICATES_3);
                     worker.ReportProgress(1, progressReporter);
@@ -112,7 +102,7 @@ namespace CMDuplicatesFinder
                     {
                         if (worker.CancellationPending == true)
                         {
-                            Trace.WriteLine("canceled");
+                            //Trace.WriteLine("canceled");
                             e.Cancel = true;
                             break;
                         }               
@@ -128,21 +118,21 @@ namespace CMDuplicatesFinder
                             //completed the whole processing, leaves the loop and prints the 
                             //final output to the user via backgroundWorker1_RunWorkerCompleted
                             completed = true;
-                            Trace.WriteLine("completed");
+                            //Trace.WriteLine("completed");
                         }
                         else
                         {
                             //still in progress, updates the ui to the user                            
                             int progress = Int32.Parse(result[RESULT_INDEX_CURRENT_STAFF]) + 2;                            
                             worker.ReportProgress(progress, progressReporter);
-                            Trace.WriteLine("progress:" + progress);                                                        
+                            //Trace.WriteLine("progress:" + progress);                                                        
                         }
                     }
                     e.Result = progressReporter.GetResult();
-                    Trace.WriteLine("Final result:" + e.Result);
+                    //Trace.WriteLine("Final result:" + e.Result);
                     if (worker.CancellationPending == true)
                     {
-                        Trace.WriteLine("canceled4");
+                        //Trace.WriteLine("canceled4");
                         e.Cancel = true;                        
                     } else { 
                         //the processing is completed and the user didnt cancel it, so we write the final result into file
@@ -152,14 +142,14 @@ namespace CMDuplicatesFinder
             } else
             {
                 //failed to read csv file
-                Trace.WriteLine("failed to read csv file");
+                //Trace.WriteLine("failed to read csv file");
                 if (worker.CancellationPending == true)
                 {
-                    Trace.WriteLine("canceled2");
+                    //Trace.WriteLine("canceled2");
                     e.Cancel = true;
                 } else {
                     //TODO handle fail
-                    Trace.WriteLine(STATUS_FAILED_OPEN);
+                    //Trace.WriteLine(STATUS_FAILED_OPEN);
                     e.Result = STATUS_FAILED_OPEN;                    
                 }                
             }
@@ -171,7 +161,7 @@ namespace CMDuplicatesFinder
         // This event handler updates the progress.
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Trace.WriteLine("progresschanged"+ e.ProgressPercentage);
+            //Trace.WriteLine("progresschanged"+ e.ProgressPercentage);
             ProgressReporter pr = (ProgressReporter)e.UserState;
             if(pr.GetTotalStaff() > 0)
             {
@@ -187,7 +177,7 @@ namespace CMDuplicatesFinder
         {
             if (e.Cancelled == true)
             {
-                Trace.WriteLine("RunWorkerCompleted cancel");
+                //Trace.WriteLine("RunWorkerCompleted cancel");
                 //closes the app on cancel, 
                 //dont need to handle anything else because the current progress result is automatically saved in the output file
                 Application.Exit();                
@@ -195,7 +185,7 @@ namespace CMDuplicatesFinder
             else if (e.Error != null)
             {
                 //some unknown error happened. Prints default error message to user and ends processing
-                Trace.WriteLine("RunWorkerCompleted error "+ e.Error.Message);                
+                //Trace.WriteLine("RunWorkerCompleted error "+ e.Error.Message);                
                                 
                 textBox1.Text = STATUS_ERROR + e.Error.Message;
                 label1.Text = STATUS_ERROR_LABEL;                
@@ -207,7 +197,7 @@ namespace CMDuplicatesFinder
                 if (e.Result.ToString().Equals(STATUS_FAILED_OPEN))
                 {
                     //failed to open csv file. Prints helpful error message to user and ends processing
-                    Trace.WriteLine("failed to open csv file");
+                    //Trace.WriteLine("failed to open csv file");
 
                     textBox1.Text = STATUS_FAILED_OPEN;
                     label1.Text = STATUS_ERROR_LABEL;
@@ -217,7 +207,7 @@ namespace CMDuplicatesFinder
                 else
                 {
                     //successfully completed the processing. Prints the final result to the user and updates the UI accordingly.
-                    Trace.WriteLine("RunWorkerCompleted result:" + e.Result);
+                    //Trace.WriteLine("RunWorkerCompleted result:" + e.Result);
 
                     textBox1.Text = e.Result.ToString();
                     label1.Text = STATUS_COMPLETED;
@@ -229,13 +219,13 @@ namespace CMDuplicatesFinder
 
         private void Form2_FormClosing(object sender, EventArgs e)
         {
-            Trace.WriteLine("Form2 closing");
+            //Trace.WriteLine("Form2 closing");
             CloseTool();
         }
 
         private void Form2_FormClosed(object sender, EventArgs e)
         {
-            Trace.WriteLine("Form2 closed");
+            //Trace.WriteLine("Form2 closed");
             CloseTool();
         }
 
@@ -245,19 +235,19 @@ namespace CMDuplicatesFinder
             {
                 //the background worker isnt running, this can happen if user closed the app after seeing an error message
                 //or after the processing is completed successfully.
-                Trace.WriteLine("not doing any processing");
+                //Trace.WriteLine("not doing any processing");
                 Application.Exit();
             } 
             else if (backgroundWorker1.WorkerSupportsCancellation == true)
             {
                 //Cancels the asynchronous operation. This can happen if user closed the app while it was doing the processing.
-                Trace.WriteLine("CancelAsync triggered");                
+                //Trace.WriteLine("CancelAsync triggered");                
                 backgroundWorker1.CancelAsync();
                 //TODO: when it crashes on exception in c++ side, check if the app stops running if the user clicks X
             }
             else
             {                
-                Trace.WriteLine("dont support cancelation");
+                //Trace.WriteLine("dont support cancelation");
                 Application.Exit();
             }
 

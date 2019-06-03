@@ -4,9 +4,9 @@
 #include <direct.h>
 #include <iomanip>
 #include "staff.h"
-#include "DuplicateGroup.h"
+//#include "DuplicateGroup.h"
 
-using namespace System;//TODO remove this line and all log prints before publishing this tool
+//using namespace System;
 
 public class DuplicatesFinder
 {
@@ -15,7 +15,7 @@ public:
 
 	/*parses the CSV stringstream and any associated pause file data, prepares the data for finding duplicates, and returns the number of staff found*/
 	int parse(std::stringstream& wholeCsv) {
-		Console::WriteLine("parse");
+		//Console::WriteLine("parse");
 
 		//parses the whole csv stringstream		
 		size_t vectorHash = 0;
@@ -49,7 +49,7 @@ public:
 		if (staffCount < 0) {
 			staffCount = 0;
 		}
-		Console::WriteLine("Parsed {0} staff. Final vector hash {1}", staffCount, vectorHash);						
+		//Console::WriteLine("Parsed {0} staff. Final vector hash {1}", staffCount, vectorHash);						
 
 		//Initializes the duplicates vector. We use one vector of duplicate groups for each duplicate type.
 		duplicates.reserve(DuplicateGroup::NUMBER_OF_DUPLICATE_TYPES);
@@ -65,15 +65,15 @@ public:
 		staffVectorHash = std::to_string(staffCount) + std::to_string(vectorHash);			
 		std::ifstream pauseFile(getPausePath(staffVectorHash), std::ios::binary);
 		if (pauseFile) {
-			Console::WriteLine("Pause File opened");
+			//Console::WriteLine("Pause File opened");
 
 			//reads the whole pause file at once into an stringstream				
 			std::stringstream* wholePauseFile = new std::stringstream();
 			*wholePauseFile << pauseFile.rdbuf();
-			Console::WriteLine("Pause File read");		
+			//Console::WriteLine("Pause File read");		
 
 			pauseFile.close();
-			Console::WriteLine("Pause File closed");
+			//Console::WriteLine("Pause File closed");
 
 			int currentDupType = 0;
 			int currentGroupId = 0;				
@@ -107,13 +107,13 @@ public:
 					}					
 				}
 			}	
-			Console::WriteLine("PauseFile parsed. lastStaffId == {0}", lastStaffId);
+			//Console::WriteLine("PauseFile parsed. lastStaffId == {0}", lastStaffId);
 			
 			delete wholePauseFile;
 			wholePauseFile = NULL;
 		}
 		else {
-			Console::WriteLine("Couldnt open the pause file");
+			//Console::WriteLine("Couldnt open the pause file");
 		}
 
 		//initializes the main iterator		
@@ -124,7 +124,7 @@ public:
 
 	/*finds some duplicates and returns the current list of duplicates as an string*/
 	std::string findDuplicates() {		
-		Console::WriteLine("findDuplicates");
+		//Console::WriteLine("findDuplicates");
 
 		if (firstIteration) {
 			//returs an empty printable list in the first iteration (or returns the current progress if resuming from paused state)
@@ -143,16 +143,13 @@ public:
 		
 		//finds the duplicates
 		int iterMax = i->id + MAX_ITERATIONS_WITHOUT_REPORTING;
-		Console::WriteLine("currentStaffIterator: {0}, iterMax {1}", i->id, iterMax);
+		//Console::WriteLine("currentStaffIterator: {0}, iterMax {1}", i->id, iterMax);
 		for (bool foundDuplicate = false; i < staffVector.end() && i->id < iterMax && !foundDuplicate; ++i) {
-			Console::WriteLine("Progress: staff i: {0}", i->id);
-			if (i->id == iterMax - 1) {
-				Console::WriteLine("Iter max reached. Progress: staff i: {0}", i->id);
-			/*	duplicatesList = printDuplicatesList(duplicates, staffVector, i->id);
-				String ^systemstring3 = gcnew String(duplicatesList.c_str());
-				Console::WriteLine("{0}", systemstring3);
-				delete systemstring3;*/
-			}
+			//Console::WriteLine("Progress: staff i: {0}", i->id);
+			/*if (i->id == iterMax - 1) {
+				Console::WriteLine("Iter max reached. Progress: staff i: {0}", i->id);			
+				printUnmanagedString(printDuplicatesList(duplicates, staffVector, i->id));
+			}*/
 			for (std::vector<Staff>::iterator j = i+1; j < staffVector.end(); ++j) {
 				int duplicateType = Staff::Compare(*i, *j);
 
@@ -164,12 +161,8 @@ public:
 					foundDuplicate = true;
 
 					/*Console::WriteLine("possible duplicate: {0}", duplicateType);
-					String ^systemstring = gcnew String(i->print().c_str());
-					Console::WriteLine("{0}", systemstring);
-					delete systemstring;
-					String ^systemstring2 = gcnew String(j->print().c_str());
-					Console::WriteLine("{0}", systemstring2);
-					delete systemstring2;*/
+					printUnmanagedString(i->print());
+					printUnmanagedString(j->print());*/
 
 					if (i->duplicateGroupId[duplicateType] < 0 && j->duplicateGroupId[duplicateType] < 0) {
 						//Console::WriteLine("none of them are in duplicate groups for this duplicate type");
@@ -499,9 +492,9 @@ private:
 	}
 
 	/*prints the unmanaged string in managed code*/
-	static void printUnmanagedString(std::string s) {
+	/*static void printUnmanagedString(std::string s) {
 		String ^systemstring = gcnew String(s.c_str());
 		Console::WriteLine("{0}", systemstring);
 		delete systemstring;
-	}
+	}*/
 };
