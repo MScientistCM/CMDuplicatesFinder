@@ -1,8 +1,6 @@
 # CMDuplicatesFinder
-A tool to find duplicate staff in cm0102 databases.
+A tool to find duplicate entries in a cm0102 database.
 
-To configure this project in your computer (to be able to modify the source code and compile) simply download it to some folder on your computer (or download it using git), then double click to open the CMDuplicatesFinder.sln file in Visual Studio. 
+To download and use the CMDuplicatesFinder tool, go here: <TODO: ADD LINK HERE>
 
-Feel free to do whatever you want with this source code and with this project, and you are welcome to make modifications to the source code and submit pull requests to make this tool better.
-
-TODO: add usage instructions for the tool.
+Else, if you are a programmer, you are welcome to submit code changes to the CMDuplicatesFinder tool (the CMDuplicatesFinder code project opens in Visual Studio by double clicking the CMDuplicatesFinder.sln file).
