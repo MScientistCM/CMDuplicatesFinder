@@ -474,13 +474,7 @@ private:
 				break;
 			}
 			ret.push_back(cell);		
-		}			
-		/*// checks for a trailing comma with no data after it
-		if (!lineStream && cell.empty())
-		{
-			// if there was a trailing comma then adds an empty element
-			staff.push_back("");
-		}*/
+		}					
 		return ret;
 	}
 
