@@ -230,8 +230,7 @@ private:
 	}
 
 	//TODO: maybe make 0 equal to o, c q qu ck and k equal (but c could equal ss too), ks and x equal (but x could equal z or s too) and this type of similar char substitution
-	//TODO: maybe make double chars like ss equal to single s, rr to r, etc, to detect tipos like alessandro vs alesandro
-	//TODO: german ß should equal s or b? currently its b
+	//TODO: maybe make double chars like ss equal to single s, rr to r, etc, to detect tipos like alessandro vs alesandro	
 	static char getNormalizedChar(char c) {
 		if (c >= 65 && c <= 90) {//all uppercase ASCII letter chars, lower case	them		
 			c = c + 32;
@@ -333,7 +332,8 @@ private:
 					return 'x';
 				}
 				if (c == -33) {
-					return 'b';
+					//TODO: german ß should equal s or ss or b? currently its s
+					return 's';
 				}
 			}
 		}
@@ -649,7 +649,6 @@ private:
 		return DuplicateGroup::DIFFERENT;
 	}	
 
-	//requires using namespace system:
 	/*static void printAllPossibleChars () {
 		for (int i = -128; i <= 127; i++) {
 			char c = i;
@@ -657,9 +656,7 @@ private:
 			x += c;
 			
 			Console::WriteLine("strange char table: {0}", c);
-			String ^systemstring = gcnew String(x.c_str());
-			Console::WriteLine("SYMBOL {0}", systemstring);
-			delete systemstring;
+			DuplicatesFinder::printUnmanagedString("SYMBOL " + x);			
 		}
 	}*/
 };
