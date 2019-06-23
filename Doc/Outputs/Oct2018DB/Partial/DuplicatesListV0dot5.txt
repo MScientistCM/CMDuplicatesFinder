@@ -1,0 +1,263 @@
+DUPLICATES LIST - PARTIAL RESULT (PROGRESS COMPLETED SO FAR: 2.47% : 81 DUPLICATE GROUPS FOUND SO FAR):
+Legend: (FN = First name; LN = Last name; CN = Common name; DOB = Date of birth)
+
+
+************************* DUPLICATE TYPE EEE: STAFFS WITH EQUAL NAMES, EQUAL DATES OF BIRTH AND EQUAL CLUBS (16 DUPLICATE GROUPS FOUND SO FAR):
+    DUPLICATE GROUP ID EEE-0:
+        FN: Lubomír; LN: Michalík; CN: [None]; DOB: 13.08.1966; CLUB: SKF Sered; LOAN: [None]; STAFF ID: 51
+        FN: Lubomir; LN: Michalik; CN: [None]; DOB: 13.08.1966; CLUB: SKF Sered; LOAN: [None]; STAFF ID: 62546
+    DUPLICATE GROUP ID EEE-1:
+        FN: Matej; LN: Slavik; CN: [None]; DOB: 05.08.1977; CLUB: DAC Dunajska Streda; LOAN: [None]; STAFF ID: 77
+        FN: Matej; LN: Slávik; CN: [None]; DOB: 05.08.1977; CLUB: DAC Dunajska Streda; LOAN: [None]; STAFF ID: 114725
+    DUPLICATE GROUP ID EEE-2:
+        FN: Dzenan; LN: Catic; CN: [None]; DOB: 25.05.1975; CLUB: Rio Grande Valley FC Toros; LOAN: [None]; STAFF ID: 375
+        FN: Dženan; LN: Catic; CN: [None]; DOB: 25.05.1975; CLUB: Rio Grande Valley FC Toros; LOAN: [None]; STAFF ID: 132223
+    DUPLICATE GROUP ID EEE-3:
+        FN: Lajos; LN: Hegedüs; CN: [None]; DOB: 19.12.1970; CLUB: Puskás Akadémia FC; LOAN: [None]; STAFF ID: 424
+        FN: Lajos; LN: Hegedus; CN: [None]; DOB: 19.12.1970; CLUB: Puskás Akadémia FC; LOAN: [None]; STAFF ID: 14199
+    DUPLICATE GROUP ID EEE-4:
+        FN: João Francisco; LN: Favaro Amaral; CN: João Francisco; DOB: 23.04.1975; CLUB: São Bernardo Futebol Clube; LOAN: [None]; STAFF ID: 443
+        FN: Joao; LN: Francisco; CN: [None]; DOB: 23.04.1975; CLUB: São Bernardo Futebol Clube; LOAN: [None]; STAFF ID: 132045
+    DUPLICATE GROUP ID EEE-5:
+        FN: Abdullah; LN: Cetin; CN: [None]; DOB: 18.03.1967; CLUB: Diyarbekirspor; LOAN: [None]; STAFF ID: 720
+        FN: Abdullah; LN: Cetin; CN: [None]; DOB: 18.03.1967; CLUB: Diyarbekirspor; LOAN: [None]; STAFF ID: 8536
+    DUPLICATE GROUP ID EEE-6:
+        FN: Dilaver; LN: Güçlü; CN: [None]; DOB: 20.02.1969; CLUB: Sakaryaspor; LOAN: [None]; STAFF ID: 59112
+        FN: Dilaver; LN: Güclü; CN: [None]; DOB: 20.02.1969; CLUB: Sakaryaspor; LOAN: [None]; STAFF ID: 883
+    DUPLICATE GROUP ID EEE-7:
+        FN: Alex; LN: Martinez; CN: [None]; DOB: 25.08.1974; CLUB: Charlotte Independence; LOAN: [None]; STAFF ID: 151808
+        FN: Alex; LN: Martínez; CN: [None]; DOB: 25.08.1974; CLUB: Charlotte Independence; LOAN: [None]; STAFF ID: 980
+    DUPLICATE GROUP ID EEE-8:
+        FN: Denílson; LN: Ramírez; CN: [None]; DOB: 25.08.1981; CLUB: Academia Deportiva Cantolao; LOAN: [None]; STAFF ID: 1727
+        FN: Denilson; LN: Ramírez; CN: [None]; DOB: 25.08.1981; CLUB: Academia Deportiva Cantolao; LOAN: [None]; STAFF ID: 150345
+    DUPLICATE GROUP ID EEE-9:
+        FN: Benoît; LN: Bryand; CN: [None]; DOB: 10.01.1975; CLUB: FC Stade Nyonnais; LOAN: [None]; STAFF ID: 2585
+        FN: Benoit; LN: Bryand; CN: [None]; DOB: 10.01.1975; CLUB: FC Stade Nyonnais; LOAN: [None]; STAFF ID: 4977
+    DUPLICATE GROUP ID EEE-10:
+        FN: Leandro Carrijo; LN: Silva; CN: Leandro Carrijo; DOB: 03.09.1968; CLUB: FC Juárez; LOAN: [None]; STAFF ID: 2649
+        FN: Leandro; LN: Carrijó; CN: [None]; DOB: 03.09.1968; CLUB: FC Juárez; LOAN: [None]; STAFF ID: 45300
+    DUPLICATE GROUP ID EEE-11:
+        FN: Cihat; LN: Celik; CN: [None]; DOB: 02.01.1979; CLUB: Gazisehir Gaziantep Futbol Kulübü; LOAN: [None]; STAFF ID: 2840
+        FN: Cihat; LN: Çelik; CN: [None]; DOB: 02.01.1979; CLUB: Gazisehir Gaziantep Futbol Kulübü; LOAN: [None]; STAFF ID: 88720
+    DUPLICATE GROUP ID EEE-12:
+        FN: Sven; LN: Goldschimdt; CN: [None]; DOB: 08.10.1982; CLUB: SV Meppen; LOAN: [None]; STAFF ID: 3068
+        FN: Sven; LN: Goldschmidt; CN: [None]; DOB: 08.10.1982; CLUB: SV Meppen; LOAN: [None]; STAFF ID: 22350
+    DUPLICATE GROUP ID EEE-13:
+        FN: Matias; LN: García; CN: [None]; DOB: 22.10.1974; CLUB: San Martín de Tucumán; LOAN: [None]; STAFF ID: 3164
+        FN: Matías; LN: García; CN: [None]; DOB: 22.10.1974; CLUB: San Martín de Tucumán; LOAN: [None]; STAFF ID: 45803
+    DUPLICATE GROUP ID EEE-14:
+        FN: Marc; LN: Amoakon; CN: [None]; DOB: 03.05.1977; CLUB: Union Sportive Esch-Alzette; LOAN: [None]; STAFF ID: 3386
+        FN: Marck; LN: Amoakon; CN: [None]; DOB: 03.05.1977; CLUB: Union Sportive Esch-Alzette; LOAN: [None]; STAFF ID: 111617
+    DUPLICATE GROUP ID EEE-15:
+        FN: Laszlo; LN: Tóth; CN: [None]; DOB: 09.07.1978; CLUB: Kazincbarcikai SC; LOAN: [None]; STAFF ID: 3429
+        FN: László; LN: Tóth; CN: [None]; DOB: 09.07.1978; CLUB: Kazincbarcikai SC; LOAN: [None]; STAFF ID: 85767
+
+
+************************* DUPLICATE TYPE EED: STAFFS WITH EQUAL NAMES, EQUAL DATES OF BIRTH AND DIFFERENT CLUBS (13 DUPLICATE GROUPS FOUND SO FAR):
+    DUPLICATE GROUP ID EED-0:
+        FN: Pedro; LN: Ribeiro; CN: [None]; DOB: 13.06.1973; CLUB: [None]; LOAN: [None]; STAFF ID: 190
+        FN: Pedro Nezio; LN: de Araújo Lopes Ribeiro; CN: Pedro Ribeiro; DOB: 13.06.1973; CLUB: Fresno FC; LOAN: [None]; STAFF ID: 107007
+    DUPLICATE GROUP ID EED-1:
+        FN: Sergei; LN: Terehhov; CN: [None]; DOB: 18.04.1958; CLUB: Nomme Kalju FC; LOAN: [None]; STAFF ID: 659
+        FN: Sergei; LN: Terehhov; CN: [None]; DOB: 18.04.1958; CLUB: Nomme Kalju FC U21; LOAN: [None]; STAFF ID: 4741
+    DUPLICATE GROUP ID EED-2:
+        FN: Dmytro; LN: Bilonoh; CN: [None]; DOB: 26.05.1978; CLUB: Zirka Kropyvnytsky; LOAN: [None]; STAFF ID: 706
+        FN: Dmytro; LN: Bilonog; CN: [None]; DOB: 26.05.1978; CLUB: [None]; LOAN: [None]; STAFF ID: 49444
+    DUPLICATE GROUP ID EED-3:
+        FN: Onur Behic; LN: Özalgan; CN: [None]; DOB: 27.08.1977; CLUB: Körfez Spor Kulübü; LOAN: [None]; STAFF ID: 876
+        FN: Onur Behic; LN: Özalgan; CN: [None]; DOB: 27.08.1977; CLUB: Nevsehir Belediyespor; LOAN: [None]; STAFF ID: 142428
+    DUPLICATE GROUP ID EED-4:
+        FN: Rubén; LN: de la Barrera; CN: [None]; DOB: 18.01.1968; CLUB: Real Sociedad C.F.; LOAN: [None]; STAFF ID: 957
+        FN: Rubén; LN: de la Barrera; CN: [None]; DOB: 18.01.1968; CLUB: Cultural Leonesa; LOAN: [None]; STAFF ID: 93167
+    DUPLICATE GROUP ID EED-5:
+        FN: Tony; LN: Tsabedze; CN: [None]; DOB: 29.10.1967; CLUB: Mbabane Swallows; LOAN: [None]; STAFF ID: 1542
+        FN: Tony; LN: Tabedze; CN: [None]; DOB: 29.10.1967; CLUB: Engen Santos (RSA); LOAN: [None]; STAFF ID: 58270
+    DUPLICATE GROUP ID EED-6:
+        FN: Paulo Carlos; LN: Lima Pereira dos Santos; CN: Carlos Pereira; DOB: 01.07.1947; CLUB: [None]; LOAN: [None]; STAFF ID: 1690
+        FN: Carlos; LN: Pereira; CN: [None]; DOB: 01.07.1947; CLUB: Atlético Clube de Portugal; LOAN: [None]; STAFF ID: 48023
+    DUPLICATE GROUP ID EED-7:
+        FN: Sameh Abdel; LN: Fadil; CN: [None]; DOB: 22.03.1971; CLUB: Pharco FC; LOAN: [None]; STAFF ID: 2243
+        FN: Sameh; LN: Abdel-Fadil; CN: [None]; DOB: 22.03.1971; CLUB: Petrojet; LOAN: [None]; STAFF ID: 124391
+    DUPLICATE GROUP ID EED-8:
+        FN: Kun-Hoan; LN: Kim; CN: Kim Kun-Hoan; DOB: 12.08.1969; CLUB: [None]; LOAN: [None]; STAFF ID: 2557
+        FN: Keun-hwan; LN: Kim; CN: Kim Keun-hwan; DOB: 12.08.1969; CLUB: Gyeongnam FC; LOAN: [None]; STAFF ID: 140681
+    DUPLICATE GROUP ID EED-9:
+        FN: Adem; LN: Gökce; CN: [None]; DOB: 10.09.1965; CLUB: Yomraspor; LOAN: [None]; STAFF ID: 2986
+        FN: Adem; LN: Gökçe; CN: [None]; DOB: 10.09.1965; CLUB: Bayburt Grup Özel Idare Genclik Ve Spor; LOAN: [None]; STAFF ID: 15366
+    DUPLICATE GROUP ID EED-10:
+        FN: Gabor; LN: Horvath; CN: [None]; DOB: 24.08.1973; CLUB: Aqvital FC Csákvár; LOAN: [None]; STAFF ID: 3237
+        FN: Gábor; LN: Horváth; CN: [None]; DOB: 24.08.1973; CLUB: Dorogi FC; LOAN: [None]; STAFF ID: 105302
+    DUPLICATE GROUP ID EED-11:
+        FN: Liridon; LN: Kukaj; CN: [None]; DOB: 22.06.1966; CLUB: KF Ballkani; LOAN: [None]; STAFF ID: 3377
+        FN: Liridon; LN: Kukaj; CN: [None]; DOB: 22.06.1966; CLUB: KF KEK-u Kastriot; LOAN: [None]; STAFF ID: 60963
+    DUPLICATE GROUP ID EED-12:
+        FN: Rui Pedro; LN: Sa Castro; CN: [None]; DOB: 10.10.1954; CLUB: Olympiacos Piraeus; LOAN: [None]; STAFF ID: 140523
+        FN: Rui Pedro; LN: Sá Castro; CN: Rui Pedro; DOB: 10.10.1954; CLUB: Vitória Guimarães SC; LOAN: [None]; STAFF ID: 3623
+
+
+************************* DUPLICATE TYPE EDE: STAFFS WITH EQUAL NAMES, DIFFERENT DATES OF BIRTH AND EQUAL CLUBS (12 DUPLICATE GROUPS FOUND SO FAR):
+    DUPLICATE GROUP ID EDE-0:
+        FN: Gastón; LN: Guruceaga; CN: [None]; DOB: 06.04.1978; CLUB: Los Andes; LOAN: [None]; STAFF ID: 53
+        FN: Gastón; LN: Guruceaga; CN: [None]; DOB: 06.04.1973; CLUB: Los Andes; LOAN: [None]; STAFF ID: 33763
+    DUPLICATE GROUP ID EDE-1:
+        FN: Sofian; LN: Chahed; CN: [None]; DOB: 18.04.1966; CLUB: VfV Borussia 06 Hildesheim; LOAN: [None]; STAFF ID: 82
+        FN: Sofien; LN: Chahed; CN: [None]; DOB: 21.11.1972; CLUB: VfV Borussia 06 Hildesheim; LOAN: [None]; STAFF ID: 42879
+    DUPLICATE GROUP ID EDE-2:
+        FN: Mickael; LN: Leoni; CN: [None]; DOB: 21.04.1972; CLUB: FC Jeunesse Canach; LOAN: [None]; STAFF ID: 681
+        FN: Mickaël; LN: Leoni; CN: [None]; DOB: 22.04.1972; CLUB: FC Jeunesse Canach; LOAN: [None]; STAFF ID: 22582
+    DUPLICATE GROUP ID EDE-3:
+        FN: Tuan Anh; LN: Nguyen; CN: [None]; DOB: 16.05.1978; CLUB: Hoang Anh Gia Lai; LOAN: [None]; STAFF ID: 766
+        FN: Nguyen; LN: Tuan Anh; CN: [None]; DOB: 00.00.0000; CLUB: Hoang Anh Gia Lai; LOAN: [None]; STAFF ID: 33586
+    DUPLICATE GROUP ID EDE-4:
+        FN: Andre; LN: Hainault; CN: [None]; DOB: 17.06.1969; CLUB: 1.FC Kaiserslautern; LOAN: [None]; STAFF ID: 150163
+        FN: André; LN: Hainault; CN: [None]; DOB: 15.06.1969; CLUB: 1.FC Kaiserslautern; LOAN: [None]; STAFF ID: 890
+    DUPLICATE GROUP ID EDE-5:
+        FN: Craig; LN: Williams; CN: [None]; DOB: 28.01.1966; CLUB: Newtown AFC; LOAN: [None]; STAFF ID: 913
+        FN: Craig T.; LN: Williams; CN: [None]; DOB: 21.12.1970; CLUB: Newtown AFC; LOAN: [None]; STAFF ID: 128783
+    DUPLICATE GROUP ID EDE-6:
+        FN: Tino; LN: Lagator; CN: [None]; DOB: 15.09.1971; CLUB: SC Hessen Dreieich; LOAN: [None]; STAFF ID: 1521
+        FN: Tino; LN: Lagator; CN: [None]; DOB: 14.09.1970; CLUB: SC Hessen Dreieich; LOAN: [None]; STAFF ID: 54722
+    DUPLICATE GROUP ID EDE-7:
+        FN: Vítor; LN: Coelho; CN: [None]; DOB: 00.00.0000; CLUB: Sport União Sintrense; LOAN: [None]; STAFF ID: 2613
+        FN: Vitor; LN: Coelho; CN: [None]; DOB: 00.00.0000; CLUB: Sport União Sintrense; LOAN: [None]; STAFF ID: 22629
+    DUPLICATE GROUP ID EDE-8:
+        FN: Slim; LN: Jedaied; CN: [None]; DOB: 20.09.1972; CLUB: Stade Tunisien; LOAN: [None]; STAFF ID: 2697
+        FN: Slim; LN: Jedaïed; CN: [None]; DOB: 19.09.1972; CLUB: Stade Tunisien; LOAN: [None]; STAFF ID: 57656
+    DUPLICATE GROUP ID EDE-9:
+        FN: Anh Duc; LN: Nguyen; CN: [None]; DOB: 25.01.1968; CLUB: Becamex Binh Duong FC; LOAN: [None]; STAFF ID: 55189
+        FN: Nguyen; LN: Anh Duc; CN: [None]; DOB: 00.00.0000; CLUB: Becamex Binh Duong FC; LOAN: [None]; STAFF ID: 2833
+    DUPLICATE GROUP ID EDE-10:
+        FN: Que; LN: Ngoc Hai; CN: [None]; DOB: 00.00.0000; CLUB: Song Lam Nghe An FC; LOAN: [None]; STAFF ID: 2910
+        FN: Ngoc Hai; LN: Que; CN: [None]; DOB: 14.05.1976; CLUB: Song Lam Nghe An FC; LOAN: [None]; STAFF ID: 48325
+    DUPLICATE GROUP ID EDE-11:
+        FN: András; LN: Vági; CN: [None]; DOB: 25.12.1971; CLUB: Paksi FC; LOAN: [None]; STAFF ID: 3033
+        FN: Andras; LN: Vagi; CN: [None]; DOB: 26.12.1971; CLUB: Paksi FC; LOAN: [None]; STAFF ID: 66614
+
+
+************************* DUPLICATE TYPE SEE: STAFFS WITH SIMILAR NAMES, EQUAL DATES OF BIRTH AND EQUAL CLUBS (13 DUPLICATE GROUPS FOUND SO FAR):
+    DUPLICATE GROUP ID SEE-0:
+        FN: Ross; LN: McCrorie; CN: [None]; DOB: 18.03.1981; CLUB: Glasgow Rangers; LOAN: [None]; STAFF ID: 343
+        FN: Robbie; LN: McCrorie; CN: [None]; DOB: 18.03.1981; CLUB: Glasgow Rangers; LOAN: [None]; STAFF ID: 99615
+    DUPLICATE GROUP ID SEE-1:
+        FN: Luiz; LN: Fernando; CN: [None]; DOB: 23.06.1980; CLUB: Richmond Kickers; LOAN: [None]; STAFF ID: 408
+        FN: Luiz Fernando; LN: Nascimento; CN: [None]; DOB: 23.06.1980; CLUB: Richmond Kickers; LOAN: [None]; STAFF ID: 132168
+    DUPLICATE GROUP ID SEE-2:
+        FN: Kosuke; LN: Matsuda; CN: [None]; DOB: 23.04.1974; CLUB: MIO Biwako Shiga; LOAN: [None]; STAFF ID: 1125
+        FN: Yusuke; LN: Matsuda; CN: [None]; DOB: 23.04.1974; CLUB: MIO Biwako Shiga; LOAN: [None]; STAFF ID: 101120
+    DUPLICATE GROUP ID SEE-3:
+        FN: Shahrazen; LN: Said; CN: [None]; DOB: 14.12.1968; CLUB: Brunei DPMM FC; LOAN: [None]; STAFF ID: 1586
+        FN: Mohammad; LN: Said; CN: [None]; DOB: 14.12.1968; CLUB: Brunei DPMM FC; LOAN: [None]; STAFF ID: 93903
+    DUPLICATE GROUP ID SEE-4:
+        FN: José; LN: Torcato; CN: [None]; DOB: 05.05.1951; CLUB: AC Alcanenense; LOAN: [None]; STAFF ID: 1795
+        FN: José António; LN: Torcato; CN: [None]; DOB: 05.05.1951; CLUB: AC Alcanenense; LOAN: [None]; STAFF ID: 2686
+    DUPLICATE GROUP ID SEE-5:
+        FN: Sime; LN: Pesic; CN: [None]; DOB: 13.07.1982; CLUB: NK Lucko; LOAN: [None]; STAFF ID: 98419
+        FN: Duje; LN: Pesic; CN: [None]; DOB: 13.07.1982; CLUB: NK Lucko; LOAN: [None]; STAFF ID: 2290
+    DUPLICATE GROUP ID SEE-6:
+        FN: Yuki; LN: Nishiya; CN: [None]; DOB: 04.10.1976; CLUB: Tochigi SC; LOAN: [None]; STAFF ID: 2333
+        FN: Kazuki; LN: Nishiya; CN: [None]; DOB: 04.10.1976; CLUB: Tochigi SC; LOAN: [None]; STAFF ID: 9714
+    DUPLICATE GROUP ID SEE-7:
+        FN: Liridon; LN: Simoni; CN: [None]; DOB: 25.10.1977; CLUB: SC Goldau; LOAN: [None]; STAFF ID: 2813
+        FN: Jozef; LN: Simoni; CN: [None]; DOB: 25.10.1977; CLUB: SC Goldau; LOAN: [None]; STAFF ID: 92428
+    DUPLICATE GROUP ID SEE-8:
+        FN: Baggio; LN: Rakotonomenjanahary; CN: [None]; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID: 2909
+        FN: John Baggio; LN: Rakotonomenjanahary; CN: John Baggio; DOB: 19.12.1974; CLUB: Sukhothai FC; LOAN: [None]; STAFF ID: 135149
+    DUPLICATE GROUP ID SEE-9:
+        FN: Matias; LN: García; CN: [None]; DOB: 22.10.1974; CLUB: San Martín de Tucumán; LOAN: [None]; STAFF ID: 3164
+        FN: Ariel; LN: García; CN: [None]; DOB: 22.10.1974; CLUB: San Martín de Tucumán; LOAN: [None]; STAFF ID: 113764
+    DUPLICATE GROUP ID SEE-10:
+        FN: Matt; LN: Penney; CN: [None]; DOB: 11.02.1981; CLUB: Sheffield Wednesday; LOAN: [None]; STAFF ID: 3395
+        FN: Matthew; LN: Penney; CN: [None]; DOB: 11.02.1981; CLUB: Sheffield Wednesday; LOAN: [None]; STAFF ID: 143832
+    DUPLICATE GROUP ID SEE-11:
+        FN: Malick; LN: Seck; CN: [None]; DOB: 09.02.1973; CLUB: Stade Bordelais; LOAN: [None]; STAFF ID: 3743
+        FN: El Hadji Malick; LN: Seck; CN: [None]; DOB: 09.02.1973; CLUB: Stade Bordelais; LOAN: [None]; STAFF ID: 74272
+    DUPLICATE GROUP ID SEE-12:
+        FN: Javi; LN: Castellano; CN: [None]; DOB: 02.11.1970; CLUB: U.D. Las Palmas; LOAN: [None]; STAFF ID: 3746
+        FN: Dani; LN: Castellano; CN: [None]; DOB: 02.11.1970; CLUB: U.D. Las Palmas; LOAN: [None]; STAFF ID: 63310
+
+
+************************* DUPLICATE TYPE SSE: STAFFS WITH SIMILAR NAMES, SIMILAR DATES OF BIRTH AND EQUAL CLUBS (12 DUPLICATE GROUPS FOUND SO FAR):
+    DUPLICATE GROUP ID SSE-0:
+        FN: Stefan; LN: Mikic; CN: [None]; DOB: 19.06.1980; CLUB: FK Rudar Prijedor; LOAN: [None]; STAFF ID: 45
+        FN: Stefan; LN: Gavranovic; CN: [None]; DOB: 13.06.1980; CLUB: FK Rudar Prijedor; LOAN: [None]; STAFF ID: 120938
+    DUPLICATE GROUP ID SSE-1:
+        FN: Hamza; LN: Uzman; CN: [None]; DOB: 01.01.1979; CLUB: Yomraspor; LOAN: [None]; STAFF ID: 73
+        FN: Osman; LN: Mertoglu; CN: [None]; DOB: 01.01.1973; CLUB: Yomraspor; LOAN: [None]; STAFF ID: 36121
+    DUPLICATE GROUP ID SSE-2:
+        FN: José Francisco; LN: Torres; CN: [None]; DOB: 30.10.1970; CLUB: Puebla FC; LOAN: [None]; STAFF ID: 339
+        FN: Francisco; LN: Torres; CN: [None]; DOB: 29.10.1970; CLUB: Puebla FC; LOAN: [None]; STAFF ID: 144239
+    DUPLICATE GROUP ID SSE-3:
+        FN: Mahmoud; LN: El Sayed; CN: [None]; DOB: 09.05.1968; CLUB: Masry Port Said; LOAN: [None]; STAFF ID: 578
+        FN: Elsayed; LN: Abdelaal; CN: [None]; DOB: 09.05.1969; CLUB: Masry Port Said; LOAN: [None]; STAFF ID: 127182
+    DUPLICATE GROUP ID SSE-4:
+        FN: Mostafa; LN: Gamal; CN: [None]; DOB: 25.07.1973; CLUB: Harras El Hodoud; LOAN: [None]; STAFF ID: 149030
+        FN: Belal; LN: Gamal; CN: [None]; DOB: 25.11.1973; CLUB: Harras El Hodoud; LOAN: [None]; STAFF ID: 760
+    DUPLICATE GROUP ID SSE-5:
+        FN: Shun; LN: Nagasawa; CN: [None]; DOB: 26.08.1971; CLUB: Gamba Osaka; LOAN: [None]; STAFF ID: 804
+        FN: Shu; LN: Kurata; CN: [None]; DOB: 26.11.1971; CLUB: Gamba Osaka; LOAN: [None]; STAFF ID: 14001
+    DUPLICATE GROUP ID SSE-6:
+        FN: Yuto; LN: Misao; CN: [None]; DOB: 16.04.1974; CLUB: Kashima Antlers; LOAN: [None]; STAFF ID: 836
+        FN: Kento; LN: Misao; CN: [None]; DOB: 16.04.1979; CLUB: Kashima Antlers; LOAN: [None]; STAFF ID: 55697
+    DUPLICATE GROUP ID SSE-7:
+        FN: Remi; LN: Jakobsen; CN: [None]; DOB: 26.01.1971; CLUB: Mo IL; LOAN: [None]; STAFF ID: 966
+        FN: Jonas; LN: Jacobsen; CN: [None]; DOB: 26.09.1971; CLUB: Mo IL; LOAN: [None]; STAFF ID: 6198
+    DUPLICATE GROUP ID SSE-8:
+        FN: Lucas; LN: Cano; CN: [None]; DOB: 09.05.1978; CLUB: Argentinos Juniors; LOAN: [None]; STAFF ID: 1567
+        FN: Lucas; LN: Chaves; CN: [None]; DOB: 09.08.1978; CLUB: Argentinos Juniors; LOAN: [None]; STAFF ID: 145436
+    DUPLICATE GROUP ID SSE-9:
+        FN: Jorge Martin; LN: Salinas; CN: [None]; DOB: 06.05.1975; CLUB: JEF United Chiba; LOAN: [None]; STAFF ID: 1710
+        FN: Jorge; LN: Salinas; CN: [None]; DOB: 07.05.1975; CLUB: JEF United Chiba; LOAN: [None]; STAFF ID: 87115
+    DUPLICATE GROUP ID SSE-10:
+        FN: Bartosz; LN: Krawczynski; CN: [None]; DOB: 08.07.1982; CLUB: Warta Gorzow; LOAN: [None]; STAFF ID: 1920
+        FN: Bartosz; LN: Zurawski; CN: [None]; DOB: 27.07.1982; CLUB: Warta Gorzow; LOAN: [None]; STAFF ID: 136129
+    DUPLICATE GROUP ID SSE-11:
+        FN: Darley Ramon; LN: Torres; CN: Darley; DOB: 14.12.1972; CLUB: Tombense Futebol Clube (MG); LOAN: [None]; STAFF ID: 2884
+        FN: Darley; LN: Torres; CN: [None]; DOB: 15.12.1972; CLUB: Tombense Futebol Clube (MG); LOAN: [None]; STAFF ID: 151351
+
+
+************************* DUPLICATE TYPE ESD: STAFFS WITH EQUAL NAMES, SIMILAR DATES OF BIRTH AND DIFFERENT CLUBS (15 DUPLICATE GROUPS FOUND SO FAR):
+    DUPLICATE GROUP ID ESD-0:
+        FN: Cédric; LN: Mensah; CN: [None]; DOB: 06.03.1972; CLUB: Stade Laval; LOAN: [None]; STAFF ID: 724
+        FN: Cedric; LN: Mensah; CN: [None]; DOB: 05.03.1972; CLUB: FC Le Mans; LOAN: [None]; STAFF ID: 51673
+    DUPLICATE GROUP ID ESD-1:
+        FN: Álvaro; LN: Giménez; CN: [None]; DOB: 19.05.1974; CLUB: UD Almería; LOAN: [None]; STAFF ID: 762
+        FN: Álvaro; LN: Jiménez; CN: [None]; DOB: 19.05.1978; CLUB: Getafe CF; LOAN: [None]; STAFF ID: 97087
+    DUPLICATE GROUP ID ESD-2:
+        FN: Carlos; LN: Fernández; CN: [None]; DOB: 01.09.1973; CLUB: Titanes FC; LOAN: [None]; STAFF ID: 993
+        FN: Carlos; LN: Hernández; CN: [None]; DOB: 16.09.1973; CLUB: Real Oviedo C.F.; LOAN: [None]; STAFF ID: 82773
+    DUPLICATE GROUP ID ESD-3:
+        FN: Fahd; LN: Al-Juhani; CN: [None]; DOB: 27.10.1974; CLUB: Al-Nadha; LOAN: [None]; STAFF ID: 1109
+        FN: Fahad; LN: Al-Johani; CN: [None]; DOB: 26.10.1974; CLUB: Al Qadisiyah FC; LOAN: [None]; STAFF ID: 108521
+    DUPLICATE GROUP ID ESD-4:
+        FN: Nicolás; LN: Martínez; CN: [None]; DOB: 15.02.1972; CLUB: Club Sol de América; LOAN: [None]; STAFF ID: 1111
+        FN: Nikolas; LN: Martidis; CN: [None]; DOB: 15.02.1964; CLUB: [None]; LOAN: [None]; STAFF ID: 106440
+    DUPLICATE GROUP ID ESD-5:
+        FN: El Aid; LN: Madouni; CN: [None]; DOB: 26.06.1969; CLUB: MC Saïda; LOAN: [None]; STAFF ID: 1374
+        FN: Laïd; LN: Madouni; CN: [None]; DOB: 23.06.1969; CLUB: [None]; LOAN: [None]; STAFF ID: 27226
+    DUPLICATE GROUP ID ESD-6:
+        FN: Goran; LN: Stevanovic; CN: [None]; DOB: 27.11.1949; CLUB: Qingdao Jonoon; LOAN: [None]; STAFF ID: 1847
+        FN: Goran; LN: Stefanovic; CN: [None]; DOB: 27.11.1947; CLUB: [None]; LOAN: [None]; STAFF ID: 57500
+    DUPLICATE GROUP ID ESD-7:
+        FN: Albi; LN: Alla; CN: [None]; DOB: 01.02.1976; CLUB: FC Flamurtari; LOAN: [None]; STAFF ID: 1910
+        FN: Ali; LN: Akla; CN: [None]; DOB: 09.02.1976; CLUB: VV IJsselmeervogels; LOAN: [None]; STAFF ID: 39908
+    DUPLICATE GROUP ID ESD-8:
+        FN: Paulo; LN: Ferreira; CN: [None]; DOB: 11.02.1970; CLUB: Sporting Clube de Bustelo; LOAN: [None]; STAFF ID: 2347
+        FN: Pablo; LN: Herrera; CN: [None]; DOB: 14.02.1970; CLUB: Universidad de Costa Rica; LOAN: [None]; STAFF ID: 17427
+    DUPLICATE GROUP ID ESD-9:
+        FN: Diego; LN: Alonso; CN: [None]; DOB: 16.04.1959; CLUB: CF Monterrey; LOAN: [None]; STAFF ID: 2379
+        FN: Diego; LN: Alonso; CN: Diego Alonso; DOB: 16.04.1958; CLUB: [None]; LOAN: [None]; STAFF ID: 35012
+    DUPLICATE GROUP ID ESD-10:
+        FN: Manel; LN: Royo; CN: [None]; DOB: 28.02.1978; CLUB: [None]; LOAN: [None]; STAFF ID: 2654
+        FN: Manel; LN: Royo; CN: [None]; DOB: 28.02.1977; CLUB: R.C.D. Espanyol B; LOAN: [None]; STAFF ID: 79839
+    DUPLICATE GROUP ID ESD-11:
+        FN: Suppiah; LN: Chanturu; CN: [None]; DOB: 14.12.1970; CLUB: [None]; LOAN: [None]; STAFF ID: 2815
+        FN: Chanturu; LN: Suppiah; CN: [None]; DOB: 14.12.1971; CLUB: Sarawak FA; LOAN: [None]; STAFF ID: 28314
+    DUPLICATE GROUP ID ESD-12:
+        FN: Dani; LN: Hernández; CN: [None]; DOB: 26.03.1979; CLUB: CD El Ejido 2012; LOAN: [None]; STAFF ID: 3094
+        FN: Dani; LN: Hernández; CN: [None]; DOB: 26.03.1969; CLUB: [None]; LOAN: [None]; STAFF ID: 99061
+    DUPLICATE GROUP ID ESD-13:
+        FN: Aleksandar; LN: Susnjar; CN: [None]; DOB: 19.08.1977; CLUB: FK Teplice; LOAN: [None]; STAFF ID: 3649
+        FN: Aleksandar; LN: Susnjar; CN: [None]; DOB: 19.08.1978; CLUB: FK Mladá Boleslav; LOAN: [None]; STAFF ID: 139982
+    DUPLICATE GROUP ID ESD-14:
+        FN: Jozef; LN: Urblík; CN: [None]; DOB: 23.08.1979; CLUB: FC Vysocina Jihlava; LOAN: [None]; STAFF ID: 3758
+        FN: Jozef; LN: Urblik; CN: [None]; DOB: 22.08.1979; CLUB: Puskás Akadémia FC; LOAN: [None]; STAFF ID: 53848
