@@ -115,10 +115,10 @@ namespace CMDuplicatesFinder
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(215, 210);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(265, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(275, 13);
             this.linkLabel1.TabIndex = 7;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "https://github.com/MScientistCM/CMDuplicatesFinder";
+            this.linkLabel1.Text = "https://champman0102.co.uk/showthread.php?t=12814";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // Form1
