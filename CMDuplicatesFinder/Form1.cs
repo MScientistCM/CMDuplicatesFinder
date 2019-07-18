@@ -45,7 +45,7 @@ namespace CMDuplicatesFinder
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/MScientistCM/CMDuplicatesFinder");
+            System.Diagnostics.Process.Start("https://champman0102.co.uk/showthread.php?t=12814");
         }
     }
 }
